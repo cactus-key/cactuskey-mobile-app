@@ -1,6 +1,4 @@
 import { createStore, combineReducers } from 'redux';
-// import auth from './reducers/auth';
-// import modals from './reducers/modals';
 import settings from './reducers/settings';
 
 import { persistStore, persistReducer } from "redux-persist";

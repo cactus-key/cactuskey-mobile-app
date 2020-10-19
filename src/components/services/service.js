@@ -1,13 +1,11 @@
 import React from 'react';
-import { StyleSheet, Modal, View, BackHandler, Image, TouchableHighlight } from 'react-native';
-import { Text, Divider } from '@ui-kitten/components'
+import { StyleSheet, View, Alert, Image, TouchableHighlight } from 'react-native';
+import { Text } from '@ui-kitten/components'
 import { default as customTheme } from '../../styles/theme.json';
-import { AppRoute } from '../../navigations/app.routes';
-import PostHeader from '../../components/molecules/post-header.molecule';
-import PostFooter from '../../components/molecules/post-footer.molecule';
-import ImageViewer from 'react-native-image-zoom-viewer';
 import { Feather } from '@expo/vector-icons';
 import { TotpGenerator } from '../../models/TotpGenerator';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import i18n from "../../../i18n";
 
 // We are using PureComponent to optimize lists
 // Pure component is reloaded only when its content is updated
@@ -16,35 +14,64 @@ class Service extends React.PureComponent {
         super(props);
         this.state = {
             service: this.props.service,
-            generator: null,
-            is_open: false,
+            generator: new TotpGenerator(
+                this.props.service,
+                (token, delay) => {
+                    this.setState({token, delay});
+                }
+            ),
+            is_open: this.props.is_open,
+            is_edit_mode: this.props.is_edit_mode,
             token: null,
             delay: null
         };
+
+        this.clickCallback = this.props.onClick;
+        this.deleteCallback = this.props.onDelete;
     }
 
-    onPress = () => {
-        this.startGenerator().then(() => {
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.is_open !== this.state.is_open) {
+            if (nextProps.is_open)
+                this.state.generator.start();
+            else
+                this.state.generator.stop();
+            
+            // Toggle State
             this.setState({
-                is_open: !this.state.is_open
-            })
-        })
+                is_open: nextProps.is_open
+            });
+        }
+
+        if (nextProps.is_edit_mode !== this.state.is_edit_mode) {
+            this.setState({is_edit_mode: nextProps.is_edit_mode});
+        }
     }
 
-    startGenerator = () => {
-        return new Promise((resolve) => {
-            if (this.state.generator)
-                return resolve();
+    onClick = () => {
+        if (!this.state.is_edit_mode) {
+            this.clickCallback();
+        } else {
+            // TODO: edit
+        }
+    }
 
-            this.setState({
-                generator: new TotpGenerator(
-                    this.state.service,
-                    (token, delay) => {
-                        this.setState({token, delay});
-                    }
-                )
-            }, resolve);
-        });
+    onDelete = () => {
+        Alert.alert(
+            i18n.t('services.delete.title'),
+            i18n.t('services.delete.text', {name: this.state.service.label}),
+            [
+                {
+                    text: i18n.t('common.cancel'),
+                    style: "cancel"
+                },
+                {
+                    text: i18n.t('common.delete'),
+                    onPress: this.deleteCallback
+                }
+            ],
+            { cancelable: true }
+        );
     }
 
     renderToken = () => {
@@ -67,12 +94,27 @@ class Service extends React.PureComponent {
         }
     }
 
+    renderDeleteButton = () => {
+        if (this.state.is_edit_mode) {
+            return (
+                <TouchableWithoutFeedback
+                    onPress={this.onDelete}>
+                    <Image
+                        style={styles.deleteIcon}
+                        source={require('../../assets/images/remove.png')}
+                    />
+                </TouchableWithoutFeedback>
+            );
+        }
+    }
+
     render() {
         return (
             <TouchableHighlight
-            underlayColor={customTheme['color-basic-900']}
-            onPress={this.onPress}>
+            underlayColor={customTheme['color-basic-600']}
+            onPress={this.onClick}>
                 <View style={styles.container}>
+                    {this.renderDeleteButton()}
                     <Image
                         style={styles.issuerIcon}
                         source={{
@@ -91,7 +133,7 @@ class Service extends React.PureComponent {
                     <View style={styles.rightWrapper}>
                         <Feather
                             style={styles.rightIcon}
-                            name={this.state.is_open ? "chevron-up" : "chevron-down"}
+                            name={this.state.is_edit_mode ? "chevron-right" : (this.state.is_open ? "chevron-up" : "chevron-down")}
                             color='#CCC'
                             size={24}/>
                         {this.renderCountdown()}
@@ -111,6 +153,13 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         paddingVertical: 15,
+    },
+    deleteIcon: {
+        height: 20,
+        width: 20,
+        marginLeft: 20,
+        marginRight: 8,
+        marginTop: 15
     },
     issuerIcon: {
         height: 40,

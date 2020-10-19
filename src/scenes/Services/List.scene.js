@@ -1,61 +1,65 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Modal, Alert, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import flowService from '../../services/flow.service';
-import { fetchExpoDeviceData } from '../../services/device_session.service';
-import PostList from '../../components/organisms/post-list.organism';
-import * as ImageManipulator from 'expo-image-manipulator';
 import { AppRoute } from '../../navigations/app.routes';
-import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
-import * as Permissions from 'expo-permissions';
-import { NewPostModal } from '../newpost'
 import { Feather } from '@expo/vector-icons';
-import Constants from 'expo-constants';
-import { AuthPanel } from '../../components/organisms/auth-panel.organism';
 import ServicesList from '../../components/services/services-list';
 import {Service} from '../../models/Service';
-import { Issuer } from '../../models/Issuer';
+import {ServiceStore} from '../../models/ServiceStore';
 
 class _ListScene extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            new_post_img: null
+          services: [],
+          is_loading: true,
+          is_edit_mode: false
         }
     }
 
-    componentDidMount = async () => {
-        // // Ask push notification permission
-        // const device_data = await fetchExpoDeviceData();
+    // componentDidMount = async () => {
+    //   await this.reloadServices();
+    // }
 
-        // // Store data in Redux
-        // this.props.dispatch({
-        //     type: "STORE_DEVICE_DATA",
-        //     value: device_data
-        // });
+    addNewService = () => {
+      this.props.navigation.navigate(
+        AppRoute.SERVICES_ADD,
+        {reloadServicesList: () => this.listReloadCallback()}
+      );
     }
 
-    renderNewService = () => (
+    renderEditModeToggle = () => (
+      <TopNavigationAction
+        icon={() => (<Feather name={this.state.is_edit_mode ? "check" : "edit-2"} color='#CCC' size={24}/>)}
+        activeOpacity={0.5}
+        onPress={() => {
+          this.setState({is_edit_mode: !this.state.is_edit_mode})
+        }}
+      />
+    );
+
+  renderNewService = () => (
     <TopNavigationAction
       icon={() => (<Feather name="plus" color='#CCC' size={24}/>)}
       activeOpacity={0.5}
-      onPress={() => this.props.auth_user_id ? this.pickNewPost() : this.props.dispatch({type: 'OPEN_AUTH_MODAL'})}
+      onPress={this.addNewService}
     />
   );
 
   render() {
     return (
         <Layout style={styles.container} level='2'>
-            {/* <AuthPanel/> */}
             <TopNavigation alignment='center'
                            title='LOGO'
+                           leftControl={this.renderEditModeToggle()}
                            rightControls={[this.renderNewService()]} />
             <ServicesList navigation={this.props.navigation}
-                      services={[new Service("pierre.avinain@gmail.com", new Issuer("Google"), "JBSWY3DPEHPK3PXP")]}
-                      style={{flex: 1}} />
+                      setReloadCallback={(callback) => this.listReloadCallback = callback}
+                      style={styles.servicesList}
+                      is_edit_mode={this.state.is_edit_mode}
+                      onNewClick={this.addNewService} />
         </Layout>
     );
   }
@@ -63,6 +67,10 @@ class _ListScene extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    paddingBottom: 60
+  },
+  servicesList: {
     flex: 1
   }
 });

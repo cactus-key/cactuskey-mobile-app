@@ -1,5 +1,6 @@
 import React from 'react';
 import bugsnag from '@bugsnag/expo';
+import { ScreenOrientation } from 'expo';
 import {NavigationContainer} from '@react-navigation/native';
 
 import {Provider} from 'react-redux';
@@ -14,7 +15,7 @@ import { default as customTheme } from './styles/theme.json';
 import { mapping, light as lightTheme, dark as darkTheme } from '@eva-design/eva';
 const appTheme = { ...darkTheme, ...customTheme };
 
-import AppStatusBar from './components/organisms/statusbar';
+import AppStatusBar from './components/statusbar';
 
 // Generate error boundary for bugsnag reporting
 const ErrorBoundary = bugsnag().getPlugin('react');
@@ -29,22 +30,11 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
-    // await Font.loadAsync({
-    //   Roboto: require('native-base/Fonts/Roboto.ttf'),
-    //   Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-    //   Ionicons: require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf'),
-    // });
-
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     this.setState({ loading: false });
   }
 
   render() {
-    // const { loading } = this.state;
-
-    // if (loading) {
-    //   return <Loading />;
-    // }
-
     return (
         <ErrorBoundary>
             <Provider store={getStore()}>
