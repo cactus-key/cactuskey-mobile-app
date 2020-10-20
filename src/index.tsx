@@ -8,6 +8,7 @@ import {getStore, getPersistor} from './store/configure_store';
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { AppNavigator } from './navigations/app.navigator';
+import FlashMessage from "react-native-flash-message";
 
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
@@ -45,6 +46,7 @@ class App extends React.Component {
                         <NavigationContainer>
                             <AppNavigator/>
                         </NavigationContainer>
+                        <FlashMessage position="bottom" />
                     </ApplicationProvider>
                 </PersistGate>
             </Provider>

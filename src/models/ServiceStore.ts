@@ -54,7 +54,7 @@ export class ServiceStore {
      */
     async store(service: Service): Promise<void> {
         if (!this.is_loaded) await this._load_index();
-        console.log(">>>>>>> STORED INTO UUID=", service.uuid);
+
         // Store service data in a safe place
         await SecureStore.setItemAsync(`services.item.${service.uuid}`, service.uri);
 

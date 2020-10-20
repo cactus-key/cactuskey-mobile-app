@@ -7,6 +7,8 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Layout, TopNavigation, TopNavigationAction, Text, Button } from '@ui-kitten/components';
 import { Service } from '../../models/Service';
 import { ServiceStore } from '../../models/ServiceStore';
+import { AppRoute } from '../../navigations/app.routes';
+import { showMessage } from "react-native-flash-message";
 
 class _AddScene extends React.Component {
 
@@ -14,20 +16,11 @@ class _AddScene extends React.Component {
         super(props);
         this.has_scanned = false;
         this.state = {
-            new_post_img: null,
             has_permission: null
         }
     }
 
     componentDidMount = async () => {
-        // // Ask push notification permission
-        // const device_data = await fetchExpoDeviceData();
-
-        // // Store data in Redux
-        // this.props.dispatch({
-        //     type: "STORE_DEVICE_DATA",
-        //     value: device_data
-        // });
         const { status } = await BarCodeScanner.requestPermissionsAsync();
         this.setState({
             has_permission: (status === 'granted')
@@ -44,6 +37,10 @@ class _AddScene extends React.Component {
             ServiceStore.getInstance().store(service).then(() => {
                 this.props.route.params.reloadServicesList();
                 this.props.navigation.goBack();
+                showMessage({
+                    message: I18n.t('services.add.success_msg'),
+                    type: "success",
+                });
             });
         } catch (error) {
             alert('Error, try again or enter code');
@@ -62,6 +59,19 @@ class _AddScene extends React.Component {
         />
     );
 
+    renderBarcodeScanner = () => {
+        if (this.state.has_permission) {
+            return (
+                <BarCodeScanner
+                    type="back"
+                    barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
+                    onBarCodeScanned={this.onQrScanned}
+                    style={styles.camera}
+                />
+            );
+        }
+    };
+
     render() {
         return (
             <Layout style={styles.container} level='2'>
@@ -70,18 +80,19 @@ class _AddScene extends React.Component {
                     title={I18n.t('services.add.title')}
                     rightControls={[]}
                     leftControl={this.renderBack()} />
-                <BarCodeScanner
-                    type="back"
-                    barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
-                    onBarCodeScanned={this.onQrScanned}
-                    style={styles.camera}
-                />
+                {this.renderBarcodeScanner()}
                 <View style={styles.hintWrapper}>
-                    <Text style={styles.hintText}>{I18n.t('services.add.hint')}</Text>
+                    <Text style={styles.hintText}>
+                        {I18n.t(this.state.has_permission ? 'services.add.hint' : 'services.add.hint_no_permission')}
+                    </Text>
                     <Button
                         style={styles.noQrcodeButton}
-                        appearance='outline'>
-                        {I18n.t('services.add.no_qrcode_button')}</Button>
+                        appearance='outline'
+                        onPress={() => this.props.navigation.navigate(AppRoute.SERVICES_ADD_MANUAL_ISSUER, {
+                            reloadServicesList: this.props.route.params.reloadServicesList
+                        })}>
+                        {I18n.t(this.state.has_permission ? 'services.add.no_qrcode_button' : 'services.add.no_permission_button')}
+                    </Button>
                 </View>
             </Layout>
         );
@@ -109,9 +120,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    return {
-        // auth_user_id: state.auth.id
-    };
+    return {};
 }
 const AddScene = connect(mapStateToProps)(_AddScene);
 export { AddScene };

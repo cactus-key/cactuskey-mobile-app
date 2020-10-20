@@ -5,8 +5,6 @@ import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/component
 import { AppRoute } from '../../navigations/app.routes';
 import { Feather } from '@expo/vector-icons';
 import ServicesList from '../../components/services/services-list';
-import {Service} from '../../models/Service';
-import {ServiceStore} from '../../models/ServiceStore';
 
 class _ListScene extends React.Component {
 
@@ -18,10 +16,6 @@ class _ListScene extends React.Component {
           is_edit_mode: false
         }
     }
-
-    // componentDidMount = async () => {
-    //   await this.reloadServices();
-    // }
 
     addNewService = () => {
       this.props.navigation.navigate(

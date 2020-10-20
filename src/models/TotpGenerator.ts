@@ -41,7 +41,6 @@ export class TotpGenerator {
         await this.generateToken();
         await this.update_remaining_time();
         this.tickCallback(this.token, this.remaining_time_in_sec);
-        console.log('tick', this.token, this.remaining_time_in_sec);
     }
 
     /**

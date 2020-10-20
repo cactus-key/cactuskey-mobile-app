@@ -5,7 +5,8 @@ export default {
     cancel: "Cancel",
     skip: "Skip",
     close: "Close",
-    delete: "Delete"
+    delete: "Delete",
+    other: "Other"
   },
 
   onboarding: {

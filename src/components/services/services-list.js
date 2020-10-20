@@ -4,6 +4,8 @@ import { List, Text, Button } from '@ui-kitten/components'
 import {ServiceStore} from '../../models/ServiceStore';
 import Service from './service';
 import i18n from "../../../i18n";
+import { AppRoute } from '../../navigations/app.routes';
+import { showMessage } from "react-native-flash-message";
 
 class ServicesList extends React.Component {
     constructor(props) {
@@ -46,9 +48,20 @@ class ServicesList extends React.Component {
             this.setState({open_service: service});
     }
 
+    onServiceEdition = (service) => {
+        this.props.navigation.navigate(AppRoute.SERVICES_EDIT, {
+            service,
+            reloadServicesList: this.reloadServices
+        });
+    }
+
     onServiceDeletion = async (service) => {
         await ServiceStore.getInstance().remove(service);
         this.reloadServices();
+        showMessage({
+            message: i18n.t('services.delete.success_msg'),
+            type: "success",
+        });
     }
 
     reloadServices = async () => {
@@ -92,6 +105,7 @@ class ServicesList extends React.Component {
                                 is_edit_mode={this.state.is_edit_mode}
                                 is_open={this.state.open_service === service.item}
                                 onClick={() => this.onServiceClick(service.item)}
+                                onEdit={() => this.onServiceEdition(service.item)}
                                 onDelete={() => this.onServiceDeletion(service.item)} />
             )} />);
         }
