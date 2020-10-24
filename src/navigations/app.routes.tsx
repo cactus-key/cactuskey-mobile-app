@@ -20,5 +20,7 @@ export enum AppRoute {
     SERVICES_ADD_MANUAL_ISSUER = 'Services Add Manual - Issuer',
     SERVICES_ADD_MANUAL_INFO = 'Services Add Manual - Info',
     SERVICES_EDIT = 'Services Edit',
+
     SETTINGS = 'Settings',
+    SETTINGS_INDEX = 'Settings Index'
 }

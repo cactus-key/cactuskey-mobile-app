@@ -1,8 +1,9 @@
 import React from 'react';
-import I18n from "../../../i18n";
+import i18n from "../../../i18n";
 import { connect } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { withStyles } from '@ui-kitten/components';
 import { Layout, TopNavigation, TopNavigationAction, Text } from '@ui-kitten/components';
 import IssuersList from '../../components/issuers/issuers-list';
 import { AppRoute } from '../../navigations/app.routes';
@@ -31,13 +32,13 @@ class _AddManual_IssuerScene extends React.Component {
 
     render() {
         return (
-            <Layout style={styles.container} level='2'>
+            <Layout style={[styles.container, {backgroundColor: this.props.theme['color-basic-800']}]} level='2'>
                 <TopNavigation
                     alignment='center'
-                    title={I18n.t('services.add.title')}
+                    title={i18n.t('services.add.title')}
                     rightControls={[]}
                     leftControl={this.renderBack()} />
-                <Text style={styles.text}>{I18n.t('services.add.manual.issuer.text')}</Text>
+                <Text style={styles.text}>{i18n.t('services.add.manual.issuer.text')}</Text>
                 <View style={styles.issuersListWrapper}>
                     <IssuersList onIssuerSelected={this.onIssuerSelected}/>
                 </View>
@@ -63,5 +64,5 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {};
 }
-const AddManual_IssuerScene = connect(mapStateToProps)(_AddManual_IssuerScene);
+const AddManual_IssuerScene = withStyles(connect(mapStateToProps)(_AddManual_IssuerScene));
 export { AddManual_IssuerScene };

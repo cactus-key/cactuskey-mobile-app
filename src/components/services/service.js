@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, Alert, Image, TouchableHighlight, Animated } from 'react-native';
 import { Text } from '@ui-kitten/components'
-import { default as customTheme } from '../../styles/theme.json';
+import { withStyles } from '@ui-kitten/components';
 import { Feather } from '@expo/vector-icons';
 import { TotpGenerator } from '../../models/TotpGenerator';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
+import { showMessage } from "react-native-flash-message";
 import i18n from "../../../i18n";
-import { PasscodeService } from '../../services/passcode.service';
 
 const CONTAINER_MIN_HEIGHT = 80;
 const CONTAINER_MAX_HEIGHT = 130;
@@ -76,6 +76,13 @@ class Service extends React.PureComponent {
         }
     }
 
+    onTokenPress = () => {
+        showMessage({
+            message: i18n.t('services.copy_msg', {issuer: this.state.service.issuer}),
+            type: "success",
+        });
+    }
+
     onDelete = () => {
         // Prevent edition system to avoid
         // triggering onClick() callback
@@ -109,17 +116,19 @@ class Service extends React.PureComponent {
                     animation="fadeIn"
                     duration={CONTAINER_ANIMATION_DELAY_IN_MS}
                     useNativeDriver>
-                    <Text style={styles.tokenText} category='s1' numberOfLines={1}>
-                        {(() => {
-                            if (this.state.service.digits === 6) {
-                                return `${this.state.token}`.replace(/\B(?=(\d{3})+(?!\d))/g, "  ")
-                            } else if (this.state.service.digits === 8) {
-                                return `${this.state.token}`.replace(/\B(?=(\d{4})+(?!\d))/g, "  ")
-                            } else {
-                                return `${this.state.token}`;
-                            }
-                        })()}
-                    </Text>
+                    <TouchableOpacity onPress={this.onTokenPress}>
+                        <Text style={styles.tokenText} category='s1' numberOfLines={1}>
+                            {(() => {
+                                if (this.state.service.digits === 6) {
+                                    return `${this.state.token}`.replace(/\B(?=(\d{3})+(?!\d))/g, "  ")
+                                } else if (this.state.service.digits === 8) {
+                                    return `${this.state.token}`.replace(/\B(?=(\d{4})+(?!\d))/g, "  ")
+                                } else {
+                                    return `${this.state.token}`;
+                                }
+                            })()}
+                        </Text>
+                    </TouchableOpacity>
                 </Animatable.View>
             );
         }
@@ -158,9 +167,12 @@ class Service extends React.PureComponent {
         const animatedContainerStyle = {height: this.state.animation_value};
         return (
             <TouchableHighlight
-            underlayColor={customTheme['color-basic-600']}
+            underlayColor={this.props.theme['color-basic-600']}
             onPress={this.onClick}>
-                <Animated.View style={[styles.container, animatedContainerStyle]}>
+                <Animated.View style={[styles.container, animatedContainerStyle, {
+                    backgroundColor: this.props.theme['color-basic-800'],
+                    borderBottomColor: this.props.theme['color-basic-700'],
+                }]}>
                     {this.renderDeleteButton()}
                     <Image
                         style={styles.issuerIcon}
@@ -192,8 +204,6 @@ class Service extends React.PureComponent {
 const styles = StyleSheet.create({
     container: {
         height: CONTAINER_MIN_HEIGHT,
-        backgroundColor: customTheme['color-basic-800'],
-        borderBottomColor: customTheme['color-basic-700'],
         borderBottomWidth: 1,
         flex: 1,
         flexDirection: 'row',
@@ -240,4 +250,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Service;
+export default withStyles(Service);

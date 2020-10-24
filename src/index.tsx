@@ -1,58 +1,74 @@
 import React from 'react';
-import bugsnag from '@bugsnag/expo';
+import { SafeAreaView } from 'react-native';
+import { withStyles } from '@ui-kitten/components';
+
 import { ScreenOrientation } from 'expo';
 import {NavigationContainer} from '@react-navigation/native';
 
-import {Provider} from 'react-redux';
-import {getStore, getPersistor} from './store/configure_store';
-import { PersistGate } from 'redux-persist/integration/react'
+import {connect} from 'react-redux';
 
 import { AppNavigator } from './navigations/app.navigator';
 import FlashMessage from "react-native-flash-message";
 
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import { default as customTheme } from './styles/theme.json';
-import { mapping, light as lightTheme, dark as darkTheme } from '@eva-design/eva';
-const appTheme = { ...darkTheme, ...customTheme };
+import { default as customDarkTheme } from './styles/dark-theme.json';
+import { default as customLightTheme } from './styles/light-theme.json';
+import { mapping, light as defaultLightTheme, dark as defaultDarkTheme } from '@eva-design/eva';
+const lightTheme = {...defaultLightTheme, ...customLightTheme};
+const darkTheme = {...defaultDarkTheme, ...customDarkTheme};
 
 import AppStatusBar from './components/statusbar';
+import * as Font from 'expo-font';
 
-// Generate error boundary for bugsnag reporting
-const ErrorBoundary = bugsnag().getPlugin('react');
+type AppProps = {current_theme: string, loading: boolean, theme: any};
 
-// Disable all yellow warnings
-console.disableYellowBox = true;
 
-class App extends React.Component {
+class _App extends React.Component<AppProps> {
   constructor() {
-    super({loading: true});
+    super({loading: true, current_theme: 'light', theme: {}});
     this.state = { loading: true };
   }
 
   async componentDidMount() {
+    await Font.loadAsync({
+      Roboto_Black: require('./assets/fonts/Roboto-Black.ttf'),
+      Roboto_Bold: require('./assets/fonts/Roboto-Bold.ttf'),
+      Roboto_Medium: require('./assets/fonts/Roboto-Medium.ttf'),
+      Roboto_Regular: require('./assets/fonts/Roboto-Regular.ttf'),
+      Roboto_Light: require('./assets/fonts/Roboto-Light.ttf'),
+    });
+
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     this.setState({ loading: false });
   }
 
   render() {
-    return (
-        <ErrorBoundary>
-            <Provider store={getStore()}>
-                <PersistGate persistor={getPersistor()}>
-                    <IconRegistry icons={EvaIconsPack} />
-                    <ApplicationProvider mapping={mapping} theme={appTheme}>
-                        <AppStatusBar/>
-                        <NavigationContainer>
-                            <AppNavigator/>
-                        </NavigationContainer>
-                        <FlashMessage position="bottom" />
-                    </ApplicationProvider>
-                </PersistGate>
-            </Provider>
-        </ErrorBoundary>
+    return (         
+      <ApplicationProvider
+        mapping={mapping}
+        theme={this.props.current_theme === 'dark' ? darkTheme : lightTheme}>
+          <IconRegistry icons={EvaIconsPack} />
+          <AppStatusBar/>
+          <NavigationContainer>
+            <SafeAreaView style={{
+              flex: 1,
+              backgroundColor: this.props.current_theme === 'dark' ? '#383838' : 'blue'
+            }}>
+              <AppNavigator/>
+            </SafeAreaView>
+              
+          </NavigationContainer>
+          <FlashMessage position="bottom" />
+      </ApplicationProvider>
     );
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    current_theme: state.settings.current_theme
+  };
+}
+const App = withStyles(connect(mapStateToProps)(_App));
 export default App;

@@ -1,11 +1,42 @@
 import React from 'react';
-import I18n from "../../../i18n";
+import i18n from "../../../i18n";
 import { StyleSheet, Text } from 'react-native';
 import { Layout, Button } from '@ui-kitten/components';
-import { default as customTheme } from '../../styles/theme.json';
+import { withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import { AppRoute } from '../../navigations/app.routes';
 import { OnboardingStep } from '../../models/OnboardingStep';
+
+// import PaperOnboarding from 'react-native-paper-onboarding';
+// import Screen1 from '../../components/onboarding-swiper/screen1';
+// import Screen2 from '../../components/onboarding-swiper/screen2';
+// import PaperOnboarding, {PaperOnboardingItemType} from "@gorhom/paper-onboarding";
+// const data = [
+//     {
+//       title: 'Hotels',
+//       description: 'All hotels and hostels are sorted by hospitality rating',
+//       backgroundColor: '#698FB8',
+//     //   image: /* IMAGE COMPONENT */,
+//     //   icon: /* ICON COMPONENT */,
+//       content: <Text>xx</Text>,
+//     },
+//     {
+//       title: 'Banks',
+//       description: 'We carefully verify all banks before add them into the app',
+//       backgroundColor: '#6CB2B8',
+//     //   image: /* IMAGE COMPONENT */,
+//     //   icon: /* ICON COMPONENT */,
+//       content: <Text>xx</Text>,
+//     },
+//     // {
+//     //   title: 'Stores',
+//     //   description: 'All local stores are categorized for your convenience',
+//     //   backgroundColor: '#9D8FBF',
+//     //   image: /* IMAGE COMPONENT */,
+//     //   icon: /* ICON COMPONENT */,
+//     //   content: /* CUSTOM COMPONENT */,
+//     // },
+//   ];
 
 class _GetStartedScene extends React.Component {
 
@@ -22,19 +53,28 @@ class _GetStartedScene extends React.Component {
             type: "ONBOARDING_GET_STARTED"
         });
 
-        this.props.navigation.navigate(AppRoute.MAIN);
+        this.props.navigation.navigate(AppRoute.SERVICES_LIST);
     }
 
     render() {
         return (
             <Layout style={styles.container}>
-                <Text style={styles.title}>{I18n.t('onboarding.get_started.title')}</Text>
+                {/* <Text style={[styles.title, {color: this.props.theme['color-basic-300']}]}>
+                    {i18n.t('onboarding.get_started.title')}
+                </Text> */}
+
+                
+
+{/* <PaperOnboarding
+      data={data}
+      onCloseButtonPress={handleOnClosePress}
+    /> */}
 
                 <Button
                     style={styles.button}
                     status='primary'
                     size='large'
-                    onPress={this._next}>{I18n.t('onboarding.get_started.button')}
+                    onPress={this._next}>{i18n.t('onboarding.get_started.button')}
                 </Button>
             </Layout>
         )
@@ -49,7 +89,6 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 30,
-        color: customTheme['color-basic-300'],
         textAlign: 'left',
         marginBottom: 20
     },
@@ -65,5 +104,5 @@ const mapStateToProps = (state) => {
     };
 }
 
-const GetStartedScene = connect(mapStateToProps)(_GetStartedScene);
+const GetStartedScene = withStyles(connect(mapStateToProps)(_GetStartedScene));
 export { GetStartedScene };

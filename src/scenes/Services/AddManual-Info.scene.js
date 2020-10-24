@@ -1,23 +1,23 @@
 import React from 'react';
-import I18n from "../../../i18n";
+import i18n from "../../../i18n";
 import { StyleSheet, View, ScrollView, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Layout, TopNavigation, TopNavigationAction, Text, Input, Button, Spinner } from '@ui-kitten/components';
-import { default as customTheme } from '../../styles/theme.json';
+import { withStyles } from '@ui-kitten/components';
 import { Service } from '../../models/Service';
 import { ServiceStore } from '../../models/ServiceStore';
 import { AppRoute } from '../../navigations/app.routes';
 import { showMessage } from "react-native-flash-message";
 
-const AccountIcon = () => (
-    <Feather color={customTheme['color-basic-400']} name="mail" size={22} style={{marginRight: 2}}/>
+const AccountIcon = (color) => (
+    <Feather color={color} name="mail" size={22} style={{marginRight: 2}}/>
 );
 
-const SecretIcon = () => (
-    <Feather color={customTheme['color-basic-400']} name="lock" size={22} style={{marginRight: 2}}/>
+const SecretIcon = (color) => (
+    <Feather color={color} name="lock" size={22} style={{marginRight: 2}}/>
 );
 
-class AddManual_InfoScene extends React.Component {
+class _AddManual_InfoScene extends React.Component {
 
     constructor(props) {
         super(props);
@@ -57,7 +57,7 @@ class AddManual_InfoScene extends React.Component {
                     this.props.route.params.reloadServicesList();
                     this.props.navigation.navigate(AppRoute.SERVICES_LIST);
                     showMessage({
-                        message: I18n.t('services.add.success_msg'),
+                        message: i18n.t('services.add.success_msg'),
                         type: "success",
                     });
                 }, 400);
@@ -67,11 +67,11 @@ class AddManual_InfoScene extends React.Component {
             this.is_processing = false;
 
             if (error.message === 'missing_account')
-                alert(I18n.t('services.add.manual.info.errors.missing_account'));
+                alert(i18n.t('services.add.manual.info.errors.missing_account'));
             else if(error.message === 'missing_secret')
-                alert(I18n.t('services.add.manual.info.errors.missing_secret'));
+                alert(i18n.t('services.add.manual.info.errors.missing_secret'));
             else
-                alert(I18n.t('services.add.manual.info.errors.unknown'));
+                alert(i18n.t('services.add.manual.info.errors.unknown'));
         }
     }
 
@@ -94,38 +94,46 @@ class AddManual_InfoScene extends React.Component {
             return (
                 <View>
                     <Input
-                        label={I18n.t('services.add.manual.info.account')}
-                        labelStyle={styles.accountInputLabel}
-                        style={styles.accountInput}
-                        placeholder={I18n.t('services.add.manual.info.account_placeholder')}
+                        label={i18n.t('services.add.manual.info.account')}
+                        labelStyle={[styles.accountInputLabel, {
+                            color: this.props.theme['color-basic-300']
+                        }]}
+                        style={[styles.accountInput, {
+                            backgroundColor: this.props.theme['color-basic-700']
+                        }]}
+                        placeholder={i18n.t('services.add.manual.info.account_placeholder')}
                         status='basic'
                         ref={(input) => { this.accountInput = input; }}
                         size='large'
                         autoCapitalize='none'
                         onChangeText={this._onAccountInput}
                         onSubmitEditing={() => { this.secretInput.focus(); }}
-                        icon={AccountIcon}
+                        icon={() => AccountIcon(this.props.theme['color-basic-400'])}
                         returnKeyType='next' />
 
                     <Input
-                        label={I18n.t('services.add.manual.info.secret')}
-                        labelStyle={styles.secretInputLabel}
-                        style={styles.secretInput}
-                        placeholder={I18n.t('services.add.manual.info.secret_placeholder')}
+                        label={i18n.t('services.add.manual.info.secret')}
+                        labelStyle={[styles.secretInputLabel, {
+                            color: this.props.theme['color-basic-300']
+                        }]}
+                        style={[styles.secretInput, {
+                            backgroundColor: this.props.theme['color-basic-700']
+                        }]}
+                        placeholder={i18n.t('services.add.manual.info.secret_placeholder')}
                         status='basic'
                         ref={(input) => { this.secretInput = input; }}
                         size='large'
                         autoCapitalize='none'
                         onChangeText={this._onSecretInput}
                         onSubmitEditing={this.onSubmit}
-                        icon={SecretIcon}
+                        icon={() => SecretIcon(this.props.theme['color-basic-400'])}
                         returnKeyType='done' />
 
                     <Button
                         style={styles.submitButton}
                         appearance='outline'
                         onPress={this.onSubmit}>
-                        {I18n.t('services.add.manual.info.button')}</Button>
+                        {i18n.t('services.add.manual.info.button')}</Button>
                 </View>
             );
         }
@@ -133,10 +141,10 @@ class AddManual_InfoScene extends React.Component {
 
     render() {
         return (
-            <Layout style={styles.container} level='2'>
+            <Layout style={[styles.container, {backgroundColor: this.props.theme['color-basic-800']}]} level='2'>
                 <TopNavigation
                     alignment='center'
-                    title={I18n.t('services.add.title')}
+                    title={i18n.t('services.add.title')}
                     rightControls={[]}
                     leftControl={this.renderBack()} />
                 <ScrollView style={styles.formWrapper}>
@@ -145,7 +153,7 @@ class AddManual_InfoScene extends React.Component {
                         source={this.state.issuer.icon}
                     />
                     <Text style={styles.text}>
-                        {I18n.t('services.add.manual.info.text', {name: this.state.issuer.name})}
+                        {i18n.t('services.add.manual.info.text', {name: this.state.issuer.name})}
                     </Text>
 
                     {this.renderSpinner()}
@@ -175,20 +183,16 @@ const styles = StyleSheet.create({
     },
     accountInputLabel: {
         fontSize: 14,
-        color: customTheme['color-basic-300'],
         marginBottom: 6
     },
     accountInput: {
-        backgroundColor: customTheme['color-basic-700'],
         marginBottom: 20
     },
     secretInputLabel: {
         fontSize: 14,
-        color: customTheme['color-basic-300'],
         marginBottom: 6
     },
     secretInput: {
-        backgroundColor: customTheme['color-basic-700'],
         marginBottom: 20
     },
     submitButton: {
@@ -200,4 +204,5 @@ const styles = StyleSheet.create({
     }
 });
 
+const AddManual_InfoScene = withStyles(_AddManual_InfoScene);
 export { AddManual_InfoScene };

@@ -1,54 +1,64 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AppRoute } from './app.routes';
-import { default as customTheme } from '../styles/theme.json';
-import { Feather, FontAwesome } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { withStyles } from '@ui-kitten/components';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Tabs
-import { FlowNavigator } from './flow.navigator';
-import { DiscoverNavigator } from './discover.navigator';
-import { ContestScene } from '../scenes/contest';
-import { GroupsScene } from '../scenes/groups';
-import { NotificationsNavigator } from './notifications.navigator';
 import { ServicesNavigator } from './services.navigator';
+import { SettingsNavigator } from './settings.navigator';
 
 const BottomTab = createBottomTabNavigator();
 
-export const MainNavigator = (): React.ReactElement => (
-  <BottomTab.Navigator tabBarOptions={{
-        activeBackgroundColor: customTheme['color-basic-800'],
-        inactiveBackgroundColor: customTheme['color-basic-800'],
+const _MainNavigator = (props) => {
+  const { theme } = props;
+  return (
+    <BottomTab.Navigator tabBarOptions={{
+        activeBackgroundColor: theme['color-basic-800'],
+        inactiveBackgroundColor: theme['color-basic-800'],
         activeTintColor: '#FFF',
-        inactiveTintColor: customTheme['color-basic-300'],
+        inactiveTintColor: theme['color-basic-300'],
         showLabel: false,
         showIcon: true,
-        }}>
+      }}>
 
-        <BottomTab.Screen
+      <BottomTab.Screen
         name={AppRoute.SERVICES}
         component={ServicesNavigator}
-        options={{tabBarIcon: (color) => (<Feather name="copy" color={color.color} size={26}/>)}}
-        />
-        {/* <BottomTab.Screen
-        name={AppRoute.DISCOVER}
-        component={DiscoverNavigator}
-        options={{tabBarIcon: (color) => (<Feather name="search" color={color.color} size={26}/>)}}
-        />
-        <BottomTab.Screen
-        name={AppRoute.CONTEST}
-        component={ContestScene}
-        options={{tabBarIcon: (color) => (<FontAwesome name="trophy" color={color.color} size={32}/>)}}
-        />
-        <BottomTab.Screen
-        name={AppRoute.NOTIFICATIONS}
-        component={NotificationsNavigator}
-        options={{tabBarIcon: (color) => (<Feather name="bell" color={color.color} size={26}/>)}}
-        />
-        <BottomTab.Screen
-        name={AppRoute.GROUPS}
-        component={GroupsScene}
-        options={{tabBarIcon: (color) => (<Feather name="grid" color={color.color} size={26}/>)}}
-        /> */}
+        options={{tabBarIcon: (color) => (<Feather name="home" color={color.color} size={26}/>)}}
+      />
+      <BottomTab.Screen
+        name={AppRoute.SETTINGS}
+        component={SettingsNavigator}
+        options={{tabBarIcon: (color) => (<Feather name="settings" color={color.color} size={26}/>)}}
+      />
 
     </BottomTab.Navigator>
-);
+  );
+}
+
+export const MainNavigator = withStyles(_MainNavigator);
+
+// export const MainNavigator = (): React.ReactElement => (
+//   <BottomTab.Navigator tabBarOptions={{
+//         activeBackgroundColor: customTheme['color-basic-800'],
+//         inactiveBackgroundColor: customTheme['color-basic-800'],
+//         activeTintColor: '#FFF',
+//         inactiveTintColor: customTheme['color-basic-300'],
+//         showLabel: false,
+//         showIcon: true,
+//         }}>
+
+//         <BottomTab.Screen
+//           name={AppRoute.SERVICES}
+//           component={ServicesNavigator}
+//           options={{tabBarIcon: (color) => (<Feather name="home" color={color.color} size={26}/>)}}
+//         />
+//         <BottomTab.Screen
+//           name={AppRoute.SETTINGS}
+//           component={SettingsNavigator}
+//           options={{tabBarIcon: (color) => (<Feather name="settings" color={color.color} size={26}/>)}}
+//         />
+
+//     </BottomTab.Navigator>
+// );

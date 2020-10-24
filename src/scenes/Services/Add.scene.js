@@ -1,6 +1,5 @@
 import React from 'react';
-import I18n from "../../../i18n";
-import { connect } from 'react-redux';
+import i18n from "../../../i18n";
 import { StyleSheet, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -9,6 +8,9 @@ import { Service } from '../../models/Service';
 import { ServiceStore } from '../../models/ServiceStore';
 import { AppRoute } from '../../navigations/app.routes';
 import { showMessage } from "react-native-flash-message";
+import { SvgXml } from 'react-native-svg';
+import { Svgs } from '../../constants/svgs.constants';
+import { withStyles } from '@ui-kitten/components';
 
 class _AddScene extends React.Component {
 
@@ -38,7 +40,7 @@ class _AddScene extends React.Component {
                 this.props.route.params.reloadServicesList();
                 this.props.navigation.goBack();
                 showMessage({
-                    message: I18n.t('services.add.success_msg'),
+                    message: i18n.t('services.add.success_msg'),
                     type: "success",
                 });
             });
@@ -72,26 +74,34 @@ class _AddScene extends React.Component {
         }
     };
 
+    renderNoPermissionDrawing = () => {
+        if (!this.state.has_permission) {
+            return (<View style={styles.noPermissionDrawingWrapper}>
+                <SvgXml style={styles.noPermissionDrawing} xml={Svgs.fetch('security')} width="200" height="200"/>
+            </View>);
+        }
+    }
+
     render() {
         return (
-            <Layout style={styles.container} level='2'>
+            <Layout style={[styles.container, {backgroundColor: this.props.theme['color-basic-800']}]} level='2'>
                 <TopNavigation
                     alignment='center'
-                    title={I18n.t('services.add.title')}
+                    title={i18n.t('services.add.title')}
                     rightControls={[]}
                     leftControl={this.renderBack()} />
                 {this.renderBarcodeScanner()}
                 <View style={styles.hintWrapper}>
+                    {this.renderNoPermissionDrawing()}
                     <Text style={styles.hintText}>
-                        {I18n.t(this.state.has_permission ? 'services.add.hint' : 'services.add.hint_no_permission')}
+                        {i18n.t(this.state.has_permission ? 'services.add.hint' : 'services.add.hint_no_permission')}
                     </Text>
                     <Button
-                        style={styles.noQrcodeButton}
                         appearance='outline'
                         onPress={() => this.props.navigation.navigate(AppRoute.SERVICES_ADD_MANUAL_ISSUER, {
                             reloadServicesList: this.props.route.params.reloadServicesList
                         })}>
-                        {I18n.t(this.state.has_permission ? 'services.add.no_qrcode_button' : 'services.add.no_permission_button')}
+                        {i18n.t(this.state.has_permission ? 'services.add.no_qrcode_button' : 'services.add.no_permission_button')}
                     </Button>
                 </View>
             </Layout>
@@ -107,20 +117,21 @@ const styles = StyleSheet.create({
         flex: 1
     },
     hintWrapper: {
-        paddingVertical: 20,
+        paddingTop: 20,
+        paddingBottom: 40,
         paddingHorizontal: 10
     },
     hintText: {
         textAlign: 'center',
         marginBottom: 20
     },
-    noQrcodeButton: {
-
+    noPermissionDrawingWrapper: {
+        alignItems: 'center'
+    },
+    noPermissionDrawing: {
+        flex: 1
     }
 });
 
-const mapStateToProps = (state) => {
-    return {};
-}
-const AddScene = connect(mapStateToProps)(_AddScene);
+const AddScene = withStyles(_AddScene);
 export { AddScene };

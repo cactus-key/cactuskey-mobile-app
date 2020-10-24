@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Neurchy",
-    "slug": "neurchy-app",
+    "name": "CactusKey",
+    "slug": "cactuskey",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -14,7 +14,7 @@
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#383838"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,7 +23,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.pavinain.cactuskey"
     },
     "extra": {
       "bugsnag": {

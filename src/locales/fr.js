@@ -17,9 +17,9 @@ export default {
   },
 
   services: {
-    loading_text: "Chargement de vos services...",
-    no_services_text: "Aucun service",
-    no_services_button: "+ Ajouter",
+    no_services_text: "Ajoutez votre premier compte pour commencer",
+    no_services_button: "Ajouter un compte",
+    copy_msg: "Token copié pour {{issuer}}.",
 
     add: {
       title: 'Ajouter un compte',
@@ -62,6 +62,20 @@ export default {
       title: "Confirmation de suppression",
       text: "Etes-vous sûr de vouloir supprimer {{name}} ?",
       success_msg: "Le compte a bien été supprimé",
+    }
+  },
+
+  settings: {
+    title: "Paramètres",
+    general: {
+      title: "Général",
+      dark_mode: "Thème sombre"
+    },
+    security: {
+      title: "Sécurité"
+    },
+    about: {
+      text: "Version {{version}} de CactusKey"
     }
   }
 };

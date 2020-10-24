@@ -1,15 +1,14 @@
 import React from 'react';
-import I18n from "../../../i18n";
-import { connect } from 'react-redux';
+import i18n from "../../../i18n";
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Layout, TopNavigation, TopNavigationAction, Button, Input, Spinner } from '@ui-kitten/components';
-import { default as customTheme } from '../../styles/theme.json';
+import { withStyles } from '@ui-kitten/components';
 import { ServiceStore } from '../../models/ServiceStore';
 import { AppRoute } from '../../navigations/app.routes';
 
-const AccountIcon = () => (
-    <Feather color={customTheme['color-basic-400']} name="mail" size={22} style={{marginRight: 2}}/>
+const AccountIcon = (color) => (
+    <Feather color={color} name="mail" size={22} style={{marginRight: 2}}/>
 );
 
 class _EditScene extends React.Component {
@@ -50,9 +49,9 @@ class _EditScene extends React.Component {
             this.is_processing = false;
 
             if (error.message === 'missing_account')
-                alert(I18n.t('services.edit.errors.missing_account'));
+                alert(i18n.t('services.edit.errors.missing_account'));
             else
-                alert(I18n.t('services.edit.errors.unknown'));
+                alert(i18n.t('services.edit.errors.unknown'));
         }
     }
 
@@ -75,9 +74,13 @@ class _EditScene extends React.Component {
             return (
                 <ScrollView style={styles.formWrapper}>
                     <Input
-                        label={I18n.t('services.edit.account')}
-                        labelStyle={styles.accountInputLabel}
-                        style={styles.accountInput}
+                        label={i18n.t('services.edit.account')}
+                        labelStyle={[styles.accountInputLabel, {
+                            color: this.props.theme['color-basic-300'],
+                        }]}
+                        style={[styles.accountInput, {
+                            backgroundColor: this.props.theme['color-basic-700'],
+                        }]}
                         placeholder={this.state.service.label}
                         defaultValue={this.state.service.label}
                         status='basic'
@@ -86,14 +89,14 @@ class _EditScene extends React.Component {
                         autoCapitalize='none'
                         onChangeText={this._onAccountInput}
                         onSubmitEditing={this.onSubmit}
-                        icon={AccountIcon}
+                        icon={() => AccountIcon(this.props.theme['color-basic-400'])}
                         returnKeyType='done' />
 
                     <Button
                         style={styles.submitButton}
                         appearance='outline'
                         onPress={this.onSubmit}>
-                        {I18n.t('services.edit.button')}</Button>
+                        {i18n.t('services.edit.button')}</Button>
                 </ScrollView>
             );
         }
@@ -101,10 +104,10 @@ class _EditScene extends React.Component {
 
     render() {
         return (
-            <Layout style={styles.container} level='2'>
+            <Layout style={[styles.container, {backgroundColor: this.props.theme['color-basic-800']}]} level='2'>
                 <TopNavigation
                     alignment='center'
-                    title={I18n.t('services.edit.title')}
+                    title={i18n.t('services.edit.title')}
                     rightControls={[]}
                     leftControl={this.renderBack()} />
                 {this.renderSpinner()}
@@ -116,7 +119,7 @@ class _EditScene extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
     },
     formWrapper: {
         paddingTop: 20,
@@ -124,11 +127,9 @@ const styles = StyleSheet.create({
     },
     accountInputLabel: {
         fontSize: 14,
-        color: customTheme['color-basic-300'],
         marginBottom: 6
     },
     accountInput: {
-        backgroundColor: customTheme['color-basic-700'],
         marginBottom: 20
     },
     submitButton: {
@@ -140,8 +141,5 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = (state) => {
-    return {};
-}
-const EditScene = connect(mapStateToProps)(_EditScene);
+const EditScene = withStyles(_EditScene);
 export { EditScene };

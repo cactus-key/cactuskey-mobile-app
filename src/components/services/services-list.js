@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { List, Text, Button } from '@ui-kitten/components'
+import { List, Text, Button, Spinner } from '@ui-kitten/components'
 import {ServiceStore} from '../../models/ServiceStore';
+import { withStyles } from '@ui-kitten/components';
 import Service from './service';
 import i18n from "../../../i18n";
 import { AppRoute } from '../../navigations/app.routes';
@@ -71,19 +72,15 @@ class ServicesList extends React.Component {
 
     renderLoading = () => {
         if(this.state.is_loading) {
-            return (
-                <View style={styles.container}>
-                    <Text>{i18n.t('services.loading_text')}</Text>
-                </View>
-            );
+            return (<View style={styles.spinner}><Spinner size='giant'/></View>);
         }
     }
 
     renderEmpty = () => {
         if(!this.state.is_loading && this.state.services.length == 0) {
             return (
-                <View style={styles.container}>
-                    <Text>{i18n.t('services.no_services_text')}</Text>
+                <View style={[styles.container, styles.emptyContainer]}>
+                    <Text style={styles.emptyText}>{i18n.t('services.no_services_text')}</Text>
                     <Button onPress={this.props.onNewClick}>
                         {i18n.t('services.no_services_button')}
                     </Button>
@@ -96,7 +93,9 @@ class ServicesList extends React.Component {
         if (!this.state.is_loading) {
             return (
                 <List
-                    style={styles.list}
+                    style={[styles.list, {
+                        backgroundColor: this.props.theme['color-basic-900']
+                    }]}
                     contentContainerStyle={styles.item}
                     data={this.state.services}
                     renderItem={(service) => (
@@ -131,9 +130,22 @@ const styles = StyleSheet.create({
         lineHeight: 18
     },
     container: {
+        alignItems: 'center'
+    },
+    emptyContainer: {
+        height: '100%',
+        paddingTop: '20%'
+    },
+    emptyText: {
+        marginVertical: 20,
+        marginBottom: '10%',
+        marginHorizontal: '10%',
+        textAlign: 'center'
+    },
+    spinner: {
         alignItems: 'center',
-        // marginTop: 40
+        marginTop: '50%'
     }
 });
 
-export default ServicesList;
+export default withStyles(ServicesList);
