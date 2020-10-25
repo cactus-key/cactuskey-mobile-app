@@ -7,6 +7,7 @@ import { withStyles } from '@ui-kitten/components';
 import { ServiceStore } from '../../models/ServiceStore';
 import { AppRoute } from '../../navigations/app.routes';
 import { AppConstants } from '../../constants/app.constants';
+import { BugsnagService } from '../../services/bugsnag.service';
 
 const AccountIcon = (color) => (
     <Feather color={color} name="mail" size={22} style={{marginRight: 2}}/>
@@ -16,6 +17,7 @@ class _EditScene extends React.Component {
 
     constructor(props) {
         super(props);
+        this.logger = BugsnagService.sceneBreadcrumbLogger('Services/Edit');
 
         this.state = {
             service: this.props.route.params.service,
@@ -33,6 +35,7 @@ class _EditScene extends React.Component {
     onSubmit = async () => {
         if (this.is_processing) return;
         this.is_processing = true;
+        this.logger('Form submitted');
         this.setState({should_display_spinner: true});
 
         // Update and store service

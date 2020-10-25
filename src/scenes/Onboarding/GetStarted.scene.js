@@ -8,11 +8,14 @@ import { AppRoute } from '../../navigations/app.routes';
 import { OnboardingStep } from '../../models/OnboardingStep';
 import Slide from '../../components/onboarding/slide';
 import { AppConstants } from '../../constants/app.constants';
+import { BugsnagService } from '../../services/bugsnag.service';
 
 class _GetStartedScene extends React.Component {
 
     constructor(props) {
         super(props);
+        this.logger = BugsnagService.sceneBreadcrumbLogger('Onboarding/GetStarted');
+
         this.state = {
             slide_index: 0
         };
@@ -22,6 +25,8 @@ class _GetStartedScene extends React.Component {
     }
 
     _next = () => {
+        this.logger('Next click');
+
         this.props.dispatch({
             type: "ONBOARDING_GET_STARTED"
         });
@@ -30,6 +35,7 @@ class _GetStartedScene extends React.Component {
     }
 
     openWebsite = () => {
+        this.logger('Open website');
         Linking.openURL(AppConstants.WEBSITE_URL);
     }
 
@@ -39,8 +45,6 @@ class _GetStartedScene extends React.Component {
                 {/* <Text style={[styles.title, {color: this.props.theme['color-basic-300']}]}>
                     {i18n.t('onboarding.get_started.title')}
                 </Text> */}
-
-                
 
                 <ViewPager
                     style={styles.slider}

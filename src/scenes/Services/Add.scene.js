@@ -11,11 +11,14 @@ import { showMessage } from "react-native-flash-message";
 import { SvgXml } from 'react-native-svg';
 import { Svgs } from '../../constants/svgs.constants';
 import { withStyles } from '@ui-kitten/components';
+import { BugsnagService } from '../../services/bugsnag.service';
 
 class _AddScene extends React.Component {
 
     constructor(props) {
         super(props);
+        this.logger = BugsnagService.sceneBreadcrumbLogger('Services/Add');
+
         this.has_scanned = false;
         this.state = {
             has_permission: null
@@ -24,6 +27,7 @@ class _AddScene extends React.Component {
 
     componentDidMount = async () => {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
+        this.logger(`BarCodeScanner permission=${status}`);
         this.setState({
             has_permission: (status === 'granted')
         })
@@ -33,6 +37,7 @@ class _AddScene extends React.Component {
         // Scan only once
         if (this.has_scanned) return;
         this.has_scanned = true;
+        this.logger('New QR code scan');
 
         try {
             const service = new Service(data.data);

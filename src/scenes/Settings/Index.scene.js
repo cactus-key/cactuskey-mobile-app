@@ -8,11 +8,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import ExpoConstants from 'expo-constants';
 import {AppConstants} from '../../constants/app.constants';
+import { BugsnagService } from '../../services/bugsnag.service';
 
 class _IndexScene extends React.Component {
 
   constructor(props) {
       super(props);
+      this.logger = BugsnagService.sceneBreadcrumbLogger('Settings');
+
       this.state = {
         services: [],
         is_loading: true,
@@ -21,6 +24,7 @@ class _IndexScene extends React.Component {
   }
 
   toggleDarkMode = () => {
+    this.logger('Toggle dark mode');
     this.props.dispatch({
       type: "SET_CURRENT_THEME",
       value: (this.props.current_theme === 'dark' ? 'light' : 'dark')
@@ -28,6 +32,7 @@ class _IndexScene extends React.Component {
   }
 
   openWebsite = () => {
+    this.logger('Open website');
     Linking.openURL(AppConstants.WEBSITE_URL);
   }
 

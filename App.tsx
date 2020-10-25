@@ -1,12 +1,14 @@
 import React from 'react';
 import Root from './src/index';
-import bugsnag from '@bugsnag/expo';
 import {Provider} from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import {getStore, getPersistor} from './src/store/configure_store';
+import { BugsnagService } from './src/services/bugsnag.service';
 
 // Generate error boundary for bugsnag reporting
-const ErrorBoundary = bugsnag().getPlugin('react');
+const ErrorBoundary = BugsnagService.errorBoundary();
+BugsnagService.leaveBreadcrumb('App started');
+// BugsnagService.notify(new Error('Test error'))
 
 // Disable all yellow warnings
 console.disableYellowBox = true;

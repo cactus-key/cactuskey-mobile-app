@@ -9,6 +9,7 @@ import { ServiceStore } from '../../models/ServiceStore';
 import { AppRoute } from '../../navigations/app.routes';
 import { showMessage } from "react-native-flash-message";
 import { AppConstants } from '../../constants/app.constants';
+import { BugsnagService } from '../../services/bugsnag.service';
 
 const AccountIcon = (color) => (
     <Feather color={color} name="mail" size={22} style={{marginRight: 2}}/>
@@ -22,6 +23,8 @@ class _AddManual_InfoScene extends React.Component {
 
     constructor(props) {
         super(props);
+        this.logger = BugsnagService.sceneBreadcrumbLogger('Services/AddManual-Info');
+
         this.account = '';
         this.secret = '';
         this.is_processing = false;
@@ -41,6 +44,7 @@ class _AddManual_InfoScene extends React.Component {
 
     onSubmit = async () => {
         if (this.is_processing) return;
+        this.logger('Form submit');
 
         // Missing account label
         if (!this.account)

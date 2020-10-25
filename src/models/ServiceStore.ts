@@ -32,7 +32,6 @@ export class ServiceStore {
      */
     async fetchAll(): Promise<Service[]> {
         if (!this.is_loaded) await this._load_index();
-        this._dump();
 
         // Clone list
         const services = [];
@@ -127,16 +126,16 @@ export class ServiceStore {
         await SecureStore.setItemAsync(`services.index`, `${uuids.length}`);
     }
 
-    private async _dump() {
-        console.log('----------- SECURE_STORE ------------');
-        const index_count = parseInt(await SecureStore.getItemAsync('services.index'));
-        console.log('| services.index:', index_count);
-        if (!isNaN(index_count)) {
-            for (let i = 0; i < index_count; i++) {
-                console.log(`| services.index.${i}`, await SecureStore.getItemAsync(`services.index.${i}`));
-            }
-        }
-        console.log('----------- SECURE_STORE ------------');
-    }
+    // private async _dump() {
+    //     console.log('----------- SECURE_STORE ------------');
+    //     const index_count = parseInt(await SecureStore.getItemAsync('services.index'));
+    //     console.log('| services.index:', index_count);
+    //     if (!isNaN(index_count)) {
+    //         for (let i = 0; i < index_count; i++) {
+    //             console.log(`| services.index.${i}`, await SecureStore.getItemAsync(`services.index.${i}`));
+    //         }
+    //     }
+    //     console.log('----------- SECURE_STORE ------------');
+    // }
 
 }

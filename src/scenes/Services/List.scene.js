@@ -5,11 +5,14 @@ import { Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/component
 import { AppRoute } from '../../navigations/app.routes';
 import { Feather } from '@expo/vector-icons';
 import ServicesList from '../../components/services/services-list';
+import { BugsnagService } from '../../services/bugsnag.service';
 
 class _ListScene extends React.Component {
 
     constructor(props) {
         super(props);
+        this.logger = BugsnagService.sceneBreadcrumbLogger('Services/List');
+
         this.state = {
           services: [],
           is_loading: true,
@@ -18,6 +21,7 @@ class _ListScene extends React.Component {
     }
 
     addNewService = () => {
+      this.logger('Add new service click');
       this.props.navigation.navigate(
         AppRoute.SERVICES_ADD,
         {reloadServicesList: () => this.listReloadCallback()}
@@ -29,6 +33,7 @@ class _ListScene extends React.Component {
         icon={() => (<Feather name={this.state.is_edit_mode ? "check" : "edit-2"} color='#CCC' size={24}/>)}
         activeOpacity={0.5}
         onPress={() => {
+          this.logger(`Toggle edit mode pressed (now=${!this.state.is_edit_mode})`);
           this.setState({is_edit_mode: !this.state.is_edit_mode})
         }}
       />
@@ -46,7 +51,10 @@ class _ListScene extends React.Component {
     <TopNavigationAction
       icon={() => (<Feather name="menu" color='#CCC' size={24}/>)}
       activeOpacity={0.5}
-      onPress={() => this.props.navigation.navigate(AppRoute.SETTINGS_INDEX)}
+      onPress={() => {
+        this.logger('Open settings menu');
+        this.props.navigation.navigate(AppRoute.SETTINGS_INDEX);
+      }}
     />
   );
 

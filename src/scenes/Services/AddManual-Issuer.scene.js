@@ -7,15 +7,19 @@ import { withStyles } from '@ui-kitten/components';
 import { Layout, TopNavigation, TopNavigationAction, Text } from '@ui-kitten/components';
 import IssuersList from '../../components/issuers/issuers-list';
 import { AppRoute } from '../../navigations/app.routes';
+import { BugsnagService } from '../../services/bugsnag.service';
 
 class _AddManual_IssuerScene extends React.Component {
 
     constructor(props) {
         super(props);
+        this.logger = BugsnagService.sceneBreadcrumbLogger('Services/AddManual-Issuer');
+
         this.state = {}
     }
 
     onIssuerSelected = (issuer) => {
+        this.logger(`Issuer selected: ${issuer.name}`);
         this.props.navigation.navigate(AppRoute.SERVICES_ADD_MANUAL_INFO, {
             reloadServicesList: this.props.route.params.reloadServicesList,
             issuer

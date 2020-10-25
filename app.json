@@ -23,11 +23,11 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.pavinain.cactuskey"
+      "bundleIdentifier": "com.cactuskey.app"
     },
     "extra": {
       "bugsnag": {
-        "apiKey": "b13d95ab5f0f018b133df62fe902e644"
+        "apiKey": "23d52e34f85b239418e437c5c26878e3"
       }
     }
   }
