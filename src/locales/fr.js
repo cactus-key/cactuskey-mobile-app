@@ -14,7 +14,7 @@ export default {
       next_button: "Commencer",
       website_button: "Aide - Code source",
 
-      slide1: "CactusKey protège vos comptes avec l'authentification à deux facteurs"
+      slide1: "Cactus-Key protège vos comptes avec l'authentification à deux facteurs"
     }
   },
 

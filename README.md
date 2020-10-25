@@ -1,15 +1,18 @@
-# Neurchy App
+# Cactus-Key app
+Cactus-Key is an open-source app, created in react native with expo (cross-platform Android & iOS), in order to manage OTP auth tokens (two-factor authentication).
 
-## App theme and colors
-1. Customize colors with: https://colors.eva.design/
-2. Download as JSON and put result into `src/styles/theme.json`, and
-keep background colors (first rows, cf https://akveo.github.io/react-native-ui-kitten/docs/guides/branding#theming)
+## Start development server
+1. Install expo command line tools:  
+`npm install --global expo-cli`
+2. Install packages:  
+`yarn` or `npm install`
+3. Start local server:  
+`expo start`
 
 ## Documentation
-UI kit (UI kitten): https://akveo.github.io/react-native-ui-kitten/docs/guides/
+Expo: https://docs.expo.io/  
+UI kitten: https://akveo.github.io/react-native-ui-kitten/docs/guides/  
+Icons: https://icons.expo.fyi/
 
-## Icons
-https://expo.github.io/vector-icons/
-
-## ideas
-animations: https://github.com/airbnb/lottie-web
+## Contributing
+Thank you for considering contributing to Cactus-Key! Fell free to submit pull-requests with your fixes and new features.
