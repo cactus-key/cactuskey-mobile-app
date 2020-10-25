@@ -2,7 +2,7 @@ import { OnboardingStep } from "../../models/OnboardingStep";
 
 const initialState = {
     onboarding_step: OnboardingStep.NOT_STARTED,
-    current_theme: 'light'
+    current_theme: 'dark'
 };
 
 function settings(state = initialState, action) {

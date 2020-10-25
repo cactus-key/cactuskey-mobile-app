@@ -23,24 +23,21 @@ import * as Font from 'expo-font';
 
 type AppProps = {current_theme: string, loading: boolean, theme: any};
 
-
 class _App extends React.Component<AppProps> {
   constructor() {
     super({loading: true, current_theme: 'light', theme: {}});
-    this.state = { loading: true };
+    this.state = {};
   }
 
   async componentDidMount() {
-    await Font.loadAsync({
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    Font.loadAsync({
       Roboto_Black: require('./assets/fonts/Roboto-Black.ttf'),
       Roboto_Bold: require('./assets/fonts/Roboto-Bold.ttf'),
       Roboto_Medium: require('./assets/fonts/Roboto-Medium.ttf'),
       Roboto_Regular: require('./assets/fonts/Roboto-Regular.ttf'),
       Roboto_Light: require('./assets/fonts/Roboto-Light.ttf'),
     });
-
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-    this.setState({ loading: false });
   }
 
   render() {

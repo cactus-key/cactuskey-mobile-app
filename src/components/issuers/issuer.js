@@ -46,9 +46,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingVertical: 5,
     },
+    iconWrapper: {
+
+    },
     icon: {
         height: 40,
         width: 40,
+        borderRadius: 5,
         marginHorizontal: 15,
         marginVertical: 5
     },
@@ -57,7 +61,6 @@ const styles = StyleSheet.create({
         paddingTop: 14
     },
     nameText: {
-        textTransform: 'capitalize',
         fontSize: 18,
         fontWeight: 'normal'
     }

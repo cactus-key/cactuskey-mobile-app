@@ -5,6 +5,7 @@ import { withStyles } from '@ui-kitten/components';
 import { Feather } from '@expo/vector-icons';
 import { TotpGenerator } from '../../models/TotpGenerator';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import ProgressCircle from 'react-native-progress-circle'
 import * as Animatable from 'react-native-animatable';
 import { showMessage } from "react-native-flash-message";
 import i18n from "../../../i18n";
@@ -39,10 +40,24 @@ class Service extends React.PureComponent {
         this.deleteCallback = this.props.onDelete;
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.is_edit_mode !== this.state.is_edit_mode) {
-            this.setState({is_edit_mode: nextProps.is_edit_mode});
+    async componentWillReceiveProps(nextProps) {
+        let newState = {};
+
+        if (await this.state.service.hash() !== await nextProps.service.hash()) {
+            newState['service'] = nextProps.service;
+            newState['generator'] = new TotpGenerator(
+                nextProps.service,
+                (token, delay) => {
+                    this.setState({token, delay});
+                }
+            );
         }
+
+        if (nextProps.is_edit_mode !== this.state.is_edit_mode) {
+            newState['is_edit_mode'] = nextProps.is_edit_mode;
+        }
+
+        this.setState(newState);
 
         if (nextProps.is_open !== this.state.is_open) {
             if (nextProps.is_open) {
@@ -67,11 +82,11 @@ class Service extends React.PureComponent {
 
     onClick = () => {
         if (!this.state.is_edit_mode) {
-            this.clickCallback();
+            this.clickCallback(this.state.service);
         } else {
             setTimeout(() => {
                 if (this.preventEdition) return;
-                this.editCallback();
+                this.editCallback(this.state.service);
             }, 100);
         }
     }
@@ -102,7 +117,7 @@ class Service extends React.PureComponent {
                 },
                 {
                     text: i18n.t('common.delete'),
-                    onPress: this.deleteCallback
+                    onPress: () => this.deleteCallback(this.state.service)
                 }
             ],
             { cancelable: true }
@@ -140,10 +155,18 @@ class Service extends React.PureComponent {
                 <Animatable.View
                     animation="fadeIn"
                     duration={CONTAINER_ANIMATION_DELAY_IN_MS}
-                    useNativeDriver>
-                    <Text style={styles.tokenText} category='s1' numberOfLines={1}>
-                        {this.state.delay}
-                    </Text>
+                    useNativeDriver
+                    style={styles.countdownWrapper}>
+                    <ProgressCircle
+                        percent={this.state.delay * 100.0 / this.state.service.periodInSec}
+                        radius={16}
+                        borderWidth={2}
+                        color={this.props.theme['color-primary-500']}
+                        shadowColor={this.props.theme['color-basic-700']}
+                        bgColor={this.props.theme['color-basic-800']}
+                        style={styles.countdown} >
+                        <Text style={{ fontSize: 14 }}>{this.state.delay}</Text>
+                    </ProgressCircle>
                 </Animatable.View>
             );
         }
@@ -180,7 +203,7 @@ class Service extends React.PureComponent {
                     />
                     <View style={styles.infoWrapper}>
                         <Text style={styles.issuerNameText} appearance='hint' category='s2' numberOfLines={1}>
-                            {this.state.service.issuer}
+                            {this.state.service.issuerName}
                         </Text>
                         <Text style={styles.labelText} category='s1' numberOfLines={1}>
                             {this.state.service.label}
@@ -219,6 +242,7 @@ const styles = StyleSheet.create({
     issuerIcon: {
         height: 40,
         width: 40,
+        borderRadius: 5,
         marginHorizontal: 15,
         marginVertical: 5
     },
@@ -229,12 +253,15 @@ const styles = StyleSheet.create({
     },
     issuerNameText: {
         lineHeight: 18,
-        textTransform: 'uppercase',
-        marginBottom: 5
+        marginBottom: 5,
+        textTransform: 'uppercase'
     },
     labelText: {
         lineHeight: 18,
         fontSize: 18
+    },
+    countdownWrapper: {
+        paddingTop: 15
     },
     tokenText: {
         marginTop: 20,
@@ -245,8 +272,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     rightIcon: {
-        // marginHorizontal: 20,
-        marginVertical: 10
+        marginVertical: 10,
+        marginLeft: 4
     },
 });
 

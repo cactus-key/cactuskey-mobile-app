@@ -11,8 +11,10 @@ export default {
 
   onboarding: {
     get_started: {
-      title: "Get Started",
-      button: "Let's go!"
+      next_button: "Commencer",
+      website_button: "Aide - Code source",
+
+      slide1: "CactusKey protège vos comptes avec l'authentification à deux facteurs"
     }
   },
 
@@ -28,6 +30,10 @@ export default {
       no_qrcode_button: "Pas de QR code ?",
       no_permission_button: "Saisir la clé manuellement",
       success_msg: "Le compte a bien été ajouté",
+      errors: {
+        totp_only: "Seul les codes TOTP (délai) sont pris en charge pour le moment",
+        unknown: "Le code semble invalide, ré-essayez ou saisissez-le manuellement"
+      },
       manual: {
         issuer: {
           text: "Quel type de compte souhaitez-vous ajouter ?"
@@ -73,9 +79,6 @@ export default {
     },
     security: {
       title: "Sécurité"
-    },
-    about: {
-      text: "Version {{version}} de CactusKey"
     }
   }
 };

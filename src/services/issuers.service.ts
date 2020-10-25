@@ -11,15 +11,15 @@ export class IssuersService {
         return IssuersService.instance;
     }
 
-    private issuers_by_name: any;
+    private issuers_by_key: any;
 
     constructor() {
         // Map issuers to name and aliases
-        this.issuers_by_name = {};
+        this.issuers_by_key = {};
         for (const issuer of ISSUERS) {
-            this.issuers_by_name[issuer.name] = issuer;
-            for (const alias of issuer.aliases) {
-                this.issuers_by_name[alias] = issuer;
+            this.issuers_by_key[issuer.key] = issuer;
+            for (const key_alias of issuer.key_aliases) {
+                this.issuers_by_key[key_alias] = issuer;
             }
         }
     }
@@ -32,13 +32,11 @@ export class IssuersService {
     }
 
     /**
-     * Fetch issuer icon by name
-     * @param name 
+     * Fetch issuer by key. If not found, return default issuer
+     * @param key 
      */
-    iconByName(name: string) {
-        let issuer: Issuer = this.issuers_by_name[name];
-        if (issuer === undefined) issuer = this.defaultIssuer;
-        return issuer.icon;
+    fetchByKey(key: string): Issuer  {
+        return this.issuers_by_key[key] || this.defaultIssuer;
     }
 
     /**
@@ -47,9 +45,9 @@ export class IssuersService {
     get defaultIssuer(): Issuer {
         return {
             name: `(${i18n.t('common.other')})`,
-            icon: require("../assets/issuers/_default.png"),
-            aliases: ["_default"],
-            is_default: true
+            key: "_default",
+            key_aliases: [],
+            icon: require("../assets/issuers/_default.png")
         };
     }
 

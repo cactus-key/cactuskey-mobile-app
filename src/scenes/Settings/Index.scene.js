@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, ScrollView, View } from 'react-native';
+import { StyleSheet, ScrollView, View, Linking } from 'react-native';
 import { Layout, Text, Toggle } from '@ui-kitten/components';
 import i18n from '../../../i18n';
 import { Setting } from '../../components/settings/setting';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import ExpoConstants from 'expo-constants';
+import {AppConstants} from '../../constants/app.constants';
 
 class _IndexScene extends React.Component {
 
@@ -26,6 +27,10 @@ class _IndexScene extends React.Component {
     });
   }
 
+  openWebsite = () => {
+    Linking.openURL(AppConstants.WEBSITE_URL);
+  }
+
   render() {
     return (
         <Layout style={styles.container} level='1'>
@@ -37,7 +42,7 @@ class _IndexScene extends React.Component {
               <Text category='h3' style={styles.headerTitle}>{i18n.t('settings.title')}</Text>
             </View>
             <Layout style={styles.settingsWrapper} level='2'>
-                <Text appearance='hint' style={styles.categoryText}>
+                {/* <Text appearance='hint' style={styles.categoryText}>
                   {i18n.t('settings.general.title')}
                 </Text>
                 <Setting icon="moon" color="#7944E6" hint={i18n.t('settings.general.dark_mode')}>
@@ -46,11 +51,16 @@ class _IndexScene extends React.Component {
                     checked={this.props.current_theme == 'dark'}
                     onChange={this.toggleDarkMode}
                   />
-                </Setting>
+                </Setting> */}
 
                 <Text appearance='hint' style={styles.categoryText}>
-                  {i18n.t('settings.about.text', {version: `${ExpoConstants.nativeAppVersion}`})}
+                  {`CactusKey - Version ${ExpoConstants.nativeAppVersion}`}
                 </Text>
+                <TouchableOpacity onPress={this.openWebsite}>
+                  <Text appearance='hint' style={[styles.categoryText, {paddingTop: 0, textTransform: 'none'}]}>
+                    {AppConstants.WEBSITE_URL}
+                  </Text>
+                </TouchableOpacity>
             </Layout>
           </ScrollView>
         </Layout>
@@ -70,7 +80,7 @@ const styles = StyleSheet.create({
   },
   headerArrowBack: {
     paddingTop: 8,
-    marginRight: 12
+    marginRight: 15
   },
   headerTitle: {
     fontFamily: 'Roboto_Bold',

@@ -1,48 +1,21 @@
 import React from 'react';
 import i18n from "../../../i18n";
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, View, Linking } from 'react-native';
 import { Layout, Button } from '@ui-kitten/components';
-import { withStyles } from '@ui-kitten/components';
+import { withStyles, ViewPager } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import { AppRoute } from '../../navigations/app.routes';
 import { OnboardingStep } from '../../models/OnboardingStep';
-
-// import PaperOnboarding from 'react-native-paper-onboarding';
-// import Screen1 from '../../components/onboarding-swiper/screen1';
-// import Screen2 from '../../components/onboarding-swiper/screen2';
-// import PaperOnboarding, {PaperOnboardingItemType} from "@gorhom/paper-onboarding";
-// const data = [
-//     {
-//       title: 'Hotels',
-//       description: 'All hotels and hostels are sorted by hospitality rating',
-//       backgroundColor: '#698FB8',
-//     //   image: /* IMAGE COMPONENT */,
-//     //   icon: /* ICON COMPONENT */,
-//       content: <Text>xx</Text>,
-//     },
-//     {
-//       title: 'Banks',
-//       description: 'We carefully verify all banks before add them into the app',
-//       backgroundColor: '#6CB2B8',
-//     //   image: /* IMAGE COMPONENT */,
-//     //   icon: /* ICON COMPONENT */,
-//       content: <Text>xx</Text>,
-//     },
-//     // {
-//     //   title: 'Stores',
-//     //   description: 'All local stores are categorized for your convenience',
-//     //   backgroundColor: '#9D8FBF',
-//     //   image: /* IMAGE COMPONENT */,
-//     //   icon: /* ICON COMPONENT */,
-//     //   content: /* CUSTOM COMPONENT */,
-//     // },
-//   ];
+import Slide from '../../components/onboarding/slide';
+import { AppConstants } from '../../constants/app.constants';
 
 class _GetStartedScene extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            slide_index: 0
+        };
 
         if (this.props.onboarding_step !== OnboardingStep.NOT_STARTED)
             this._next();
@@ -56,6 +29,10 @@ class _GetStartedScene extends React.Component {
         this.props.navigation.navigate(AppRoute.SERVICES_LIST);
     }
 
+    openWebsite = () => {
+        Linking.openURL(AppConstants.WEBSITE_URL);
+    }
+
     render() {
         return (
             <Layout style={styles.container}>
@@ -65,17 +42,25 @@ class _GetStartedScene extends React.Component {
 
                 
 
-{/* <PaperOnboarding
-      data={data}
-      onCloseButtonPress={handleOnClosePress}
-    /> */}
+                <ViewPager
+                    style={styles.slider}
+                    selectedIndex={this.state.slide_index}
+                    onSelect={index => this.setState({slide_index: index})}>
+                    <Slide text={i18n.t('onboarding.get_started.slide1')} svg="security2" />
+                </ViewPager>
 
-                <Button
-                    style={styles.button}
-                    status='primary'
-                    size='large'
-                    onPress={this._next}>{i18n.t('onboarding.get_started.button')}
-                </Button>
+                <View style={styles.buttonWrapper}>
+                    <Button
+                        style={styles.button}
+                        status='primary'
+                        size='large'
+                        onPress={this._next}>{i18n.t('onboarding.get_started.next_button')}
+                    </Button>
+
+                    <Button style={styles.button} appearance='ghost' status='basic' onPress={this.openWebsite}>
+                        {i18n.t('onboarding.get_started.website_button')}
+                    </Button>
+                </View>
             </Layout>
         )
     }
@@ -83,19 +68,22 @@ class _GetStartedScene extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingLeft: 20,
-        paddingRight: 12
+        height: '100%',
+        paddingHorizontal: '10%'
     },
-    title: {
-        fontSize: 30,
-        textAlign: 'left',
-        marginBottom: 20
+    slider: {
+        height: '60%',
+        marginTop: '10%'
+    },
+    buttonWrapper: {
+        width: '100%',
+        flex: 1,
+        alignItems: 'center'
     },
     button: {
         width: '100%',
-        marginBottom: 25
-    }
+        marginBottom: '10%'
+    },
 });
 
 const mapStateToProps = (state) => {

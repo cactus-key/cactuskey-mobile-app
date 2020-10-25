@@ -8,6 +8,7 @@ import { Service } from '../../models/Service';
 import { ServiceStore } from '../../models/ServiceStore';
 import { AppRoute } from '../../navigations/app.routes';
 import { showMessage } from "react-native-flash-message";
+import { AppConstants } from '../../constants/app.constants';
 
 const AccountIcon = (color) => (
     <Feather color={color} name="mail" size={22} style={{marginRight: 2}}/>
@@ -40,18 +41,26 @@ class _AddManual_InfoScene extends React.Component {
 
     onSubmit = async () => {
         if (this.is_processing) return;
+
+        // Missing account label
+        if (!this.account)
+            return alert(i18n.t('services.add.manual.info.errors.missing_account'));
+
+        // Missing secret
+        if (!this.secret)
+            return alert(i18n.t('services.add.manual.info.errors.missing_secret'));
+
         this.is_processing = true;
         this.setState({should_display_spinner: true});
 
         // Create and store new service
         try {
-            if (!this.account) throw new Error("missing_account");
-            if (!this.secret) throw new Error("missing_secret");
             const service = Service.newFromInfo({
                 label: this.account,
-                issuer: this.state.issuer.name,
+                issuer: this.state.issuer.key,
                 secret: this.secret
             });
+            
             ServiceStore.getInstance().store(service).then(() => {
                 setTimeout(() => {
                     this.props.route.params.reloadServicesList();
@@ -65,13 +74,7 @@ class _AddManual_InfoScene extends React.Component {
         } catch (error) {
             this.setState({should_display_spinner: false});
             this.is_processing = false;
-
-            if (error.message === 'missing_account')
-                alert(i18n.t('services.add.manual.info.errors.missing_account'));
-            else if(error.message === 'missing_secret')
-                alert(i18n.t('services.add.manual.info.errors.missing_secret'));
-            else
-                alert(i18n.t('services.add.manual.info.errors.unknown'));
+            alert(i18n.t('services.add.manual.info.errors.unknown'));
         }
     }
 
@@ -109,6 +112,7 @@ class _AddManual_InfoScene extends React.Component {
                         onChangeText={this._onAccountInput}
                         onSubmitEditing={() => { this.secretInput.focus(); }}
                         icon={() => AccountIcon(this.props.theme['color-basic-400'])}
+                        maxLength={AppConstants.MAX_LABEL_LENGTH}
                         returnKeyType='next' />
 
                     <Input
@@ -126,6 +130,7 @@ class _AddManual_InfoScene extends React.Component {
                         autoCapitalize='none'
                         onChangeText={this._onSecretInput}
                         onSubmitEditing={this.onSubmit}
+                        maxLength={AppConstants.MAX_SECRET_LENGTH}
                         icon={() => SecretIcon(this.props.theme['color-basic-400'])}
                         returnKeyType='done' />
 
@@ -175,6 +180,7 @@ const styles = StyleSheet.create({
     icon: {
         height: 40,
         width: 40,
+        borderRadius: 5,
         marginBottom: 10
     },
     text: {

@@ -6,6 +6,7 @@ import { Layout, TopNavigation, TopNavigationAction, Button, Input, Spinner } fr
 import { withStyles } from '@ui-kitten/components';
 import { ServiceStore } from '../../models/ServiceStore';
 import { AppRoute } from '../../navigations/app.routes';
+import { AppConstants } from '../../constants/app.constants';
 
 const AccountIcon = (color) => (
     <Feather color={color} name="mail" size={22} style={{marginRight: 2}}/>
@@ -87,6 +88,7 @@ class _EditScene extends React.Component {
                         ref={(input) => { this.accountInput = input; }}
                         size='large'
                         autoCapitalize='none'
+                        maxLength={AppConstants.MAX_LABEL_LENGTH}
                         onChangeText={this._onAccountInput}
                         onSubmitEditing={this.onSubmit}
                         icon={() => AccountIcon(this.props.theme['color-basic-400'])}

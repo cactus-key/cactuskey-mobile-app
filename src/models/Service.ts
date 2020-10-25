@@ -4,12 +4,16 @@ import * as OTPAuth from 'otpauth';
 import { totpToken, totpOptions, totpTimeRemaining } from '@otplib/core';
 import { createDigest } from '@otplib/plugin-crypto-js';
 import uuid from 'react-native-uuid';
-import { ServiceStore } from "./ServiceStore";
 import { IssuersService } from '../services/issuers.service';
+import { AppConstants } from '../constants/app.constants';
+import { Issuer } from '../constants/issuers.constant';
+import * as Crypto from 'expo-crypto';
 
+type OtpType = 'TOTP' | 'HOTP';
 type OtpAlgorithm = 'SHA1' | 'SHA256' | 'SHA512';
 
 export class Service {
+    private _type: OtpType;
     private _secret: string;
     private _issuer: string;
     private _label: string;
@@ -18,14 +22,24 @@ export class Service {
     private _digits: number;
 
     constructor(private _uri: string, private _uuid?: string) {
-        const data = OTPAuth.URI.parse(_uri);
+        // Generate UUID if doesn't exists
         this._uuid = _uuid || uuid.v4();
-        this._algorithm = <OtpAlgorithm> data.algorithm || 'SHA1';
-        this._digits = data.digits || 6;
-        this._issuer = data.issuer || '';
-        this._label = data.label;
-        this._periodInSec = data['period'] || 30;
+
+        // Parse OTPAuth URI with library
+        // see https://www.npmjs.com/package/otpauth
+        const data = OTPAuth.URI.parse(_uri);
+
+        // Detect OTP type
+        this._type = <OtpType> data.constructor.name;
+        if (this._type !== 'TOTP') throw new Error("TOTP_ONLY");
+
+        // Store and truncate other parameters
         this._secret = data.secret.hex;
+        this._algorithm = <OtpAlgorithm> data.algorithm;
+        this._digits = data.digits || 6;
+        this._issuer = (data.issuer || '').substr(0, AppConstants.MAX_ISSUER_NAME_LENGTH)
+        this._label = (data.label || '').substr(0, AppConstants.MAX_LABEL_LENGTH);
+        this._periodInSec = data['period'] || 30; 
     }
 
     static newFromInfo(info: {
@@ -44,6 +58,8 @@ export class Service {
 
     get uuid(): string { return this._uuid; }
     get uri(): string { return this._uri; }
+    get type(): OtpType { return this._type; }
+    get algorithm(): OtpAlgorithm { return this._algorithm; }
     get label(): string { return this._label; }
     get issuer(): string { return this._issuer; }
     get periodInSec(): number { return this._periodInSec; }
@@ -81,12 +97,39 @@ export class Service {
     }
 
     /**
+     * Compute service hash to know if it has been updated
+     */
+    async hash(): Promise<string> {
+        return await Crypto.digestStringAsync(
+            Crypto.CryptoDigestAlgorithm.SHA256,
+            JSON.stringify(this)
+        );
+    }
+
+    /**
+     * Return issuer name
+     */
+    get issuerName(): any {
+        return this.fetchIssuer().name;
+    }
+
+    /**
      * Return issuer icon from assets/issuers/ folder
      */
     get issuerIcon(): any {
-        return IssuersService.getInstance().iconByName(this.issuer);
+        return this.fetchIssuer().icon;
     }
 
+    /**
+     * Fetch issuer from issuers service
+     */
+    private fetchIssuer(): Issuer {
+        return IssuersService.getInstance().fetchByKey(this._issuer);
+    }
+
+    /**
+     * Regenerate OTPAuth URI according to parameters
+     */
     private regenerateUri(): void {
         this._uri = new OTPAuth.TOTP({
             issuer: this._issuer,

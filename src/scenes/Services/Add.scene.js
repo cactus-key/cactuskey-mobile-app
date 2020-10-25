@@ -45,11 +45,15 @@ class _AddScene extends React.Component {
                 });
             });
         } catch (error) {
-            alert('Error, try again or enter code');
+            if (error.message === 'TOTP_ONLY') {
+                alert(i18n.t('services.add.errors.totp_only'));
+            } else {
+                alert(i18n.t('services.add.errors.unknown'));
+            }
+            
             setTimeout(() => {
                 this.has_scanned = false;
             }, 2000);
-            throw error;
         }
     }
 

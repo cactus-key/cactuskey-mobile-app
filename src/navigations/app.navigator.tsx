@@ -18,7 +18,7 @@ export const AppNavigator = (): React.ReactElement => (
   <Stack.Navigator headerMode='none'>
     <Stack.Screen name={AppRoute.ONBOARDING} component={OnboardingNavigator} options={{gestureEnabled: false}}/>
     
-    <Stack.Screen name={AppRoute.SERVICES_LIST} component={ListScene} options={{gestureEnabled: true}}/>
+    <Stack.Screen name={AppRoute.SERVICES_LIST} component={ListScene} options={{gestureEnabled: false}}/>
     <Stack.Screen name={AppRoute.SERVICES_ADD} component={AddScene}/>
     <Stack.Screen name={AppRoute.SERVICES_ADD_MANUAL_ISSUER} component={AddManual_IssuerScene}/>
     <Stack.Screen name={AppRoute.SERVICES_ADD_MANUAL_INFO} component={AddManual_InfoScene}/>

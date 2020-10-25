@@ -98,14 +98,15 @@ class ServicesList extends React.Component {
                     }]}
                     contentContainerStyle={styles.item}
                     data={this.state.services}
+                    extraData={this.state.services}
                     renderItem={(service) => (
                         <Service navigation={this.props.navigation}
                                 service={service.item}
                                 is_edit_mode={this.state.is_edit_mode}
                                 is_open={this.state.open_service === service.item}
-                                onClick={() => this.onServiceClick(service.item)}
-                                onEdit={() => this.onServiceEdition(service.item)}
-                                onDelete={() => this.onServiceDeletion(service.item)} />
+                                onClick={this.onServiceClick}
+                                onEdit={this.onServiceEdition}
+                                onDelete={this.onServiceDeletion} />
             )} />);
         }
     }

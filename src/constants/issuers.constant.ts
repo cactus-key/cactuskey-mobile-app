@@ -1,16 +1,18 @@
-type Issuer = {name: string, icon: any, aliases: string[], is_default?: boolean};
 const ICONS_PATH = "../assets/issuers";
+
+type Issuer = {
+    name: string,
+    icon: any,
+    key: string;
+    key_aliases: string[]
+};
 
 const ISSUERS: Issuer[] = [
     {
-        name: "facebook",
-        icon: require(`${ICONS_PATH}/facebook.png`),
-        aliases: ["otplib-website"]
-    },
-    {
-        name: "react-native",
-        icon: require(`${ICONS_PATH}/react-native.png`),
-        aliases: ["reactnative"]
+        name: "Dropbox",
+        key: "Dropbox",
+        key_aliases: [],
+        icon: require(`${ICONS_PATH}/dropbox.jpg`)
     }
 ];
 

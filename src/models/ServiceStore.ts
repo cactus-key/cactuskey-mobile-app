@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import { Service } from './Service';
-import { getStore } from '../store/configure_store';
+import * as Crypto from 'expo-crypto';
 
 const SERVICES_PER_PAGE = 6;
 
@@ -33,7 +33,11 @@ export class ServiceStore {
     async fetchAll(): Promise<Service[]> {
         if (!this.is_loaded) await this._load_index();
         this._dump();
-        return this.services;
+
+        // Clone list
+        const services = [];
+        for (const service of this.services) services.push(service);
+        return services;
     }
 
     /**
@@ -83,7 +87,7 @@ export class ServiceStore {
     }
 
     private async _load_index(): Promise<void> {
-        let pages_count = parseInt(await SecureStore.getItemAsync('services.pages'));
+        let pages_count = parseInt(await SecureStore.getItemAsync('services.index'));
         if (isNaN(pages_count)) pages_count = 0;
 
         if (pages_count === 0) {
@@ -94,7 +98,7 @@ export class ServiceStore {
 
         // Fetch all service uuids
         this.services = [];
-        for (let i = 0; i <= pages_count; i++)
+        for (let i = 0; i < pages_count; i++)
         {
             try {
                 const uuid = await SecureStore.getItemAsync(`services.index.${i}`);
