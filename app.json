@@ -23,7 +23,12 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.cactuskey.app"
+      "bundleIdentifier": "com.cactuskey.app",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.cactuskey.app",
+      "versionCode": 1
     },
     "extra": {
       "bugsnag": {
