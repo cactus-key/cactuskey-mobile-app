@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
 
-import { ScreenOrientation } from 'expo';
+import * as ScreenOrientation from 'expo-screen-orientation';
 import {NavigationContainer} from '@react-navigation/native';
 
 import {connect} from 'react-redux';
