@@ -2,6 +2,7 @@ export default {
   common: {
     next: "Suivant",
     previous: "Précédent",
+    edit: "Editer",
     cancel: "Annuler",
     skip: "Ignorer",
     close: "Fermer",

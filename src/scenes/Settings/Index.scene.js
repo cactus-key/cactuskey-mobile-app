@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, ScrollView, View, Linking } from 'react-native';
-import { Layout, Text, Toggle } from '@ui-kitten/components';
+import { Layout, Text, withStyles } from '@ui-kitten/components';
 import i18n from '../../../i18n';
 import { Setting } from '../../components/settings/setting';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -38,14 +38,14 @@ class _IndexScene extends React.Component {
 
   render() {
     return (
-        <Layout style={styles.container} level='1'>
-          <ScrollView>
-            <View style={styles.header}>
+        <Layout style={styles.container} level='2'>
+          <ScrollView style={styles.scrollView} bounces={false}>
+            <Layout style={styles.header} level='1'>
               <TouchableOpacity style={styles.headerArrowBack} onPress={() => this.props.navigation.goBack()}>
                 <Feather name="chevron-left" color='#CCC' size={24}/>
               </TouchableOpacity>
               <Text category='h3' style={styles.headerTitle}>{i18n.t('settings.title')}</Text>
-            </View>
+            </Layout>
             <Layout style={styles.settingsWrapper} level='2'>
                 {/* <Text appearance='hint' style={styles.categoryText}>
                   {i18n.t('settings.general.title')}
@@ -77,6 +77,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  scrollView: {
+    flex: 1
+  },
   header: {
     flex: 1,
     flexDirection: 'row',
@@ -92,7 +95,8 @@ const styles = StyleSheet.create({
   },
   settingsWrapper: {
     flex: 1,
-    minHeight: '100%'
+    minHeight: '100%',
+    height: '100%'
   },
   categoryText: {
     textTransform: 'uppercase',
@@ -111,5 +115,5 @@ const mapStateToProps = (state) => {
       current_theme: state.settings.current_theme
     };
 }
-const IndexScene = connect(mapStateToProps)(_IndexScene);
+const IndexScene = connect(mapStateToProps)(withStyles(_IndexScene));
 export { IndexScene };
