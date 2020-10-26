@@ -25,9 +25,13 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    
     "ios": {
       "buildNumber": "1.0.0",
-      "bundleIdentifier": "com.cactuskey.app"
+      "bundleIdentifier": "com.cactuskey.app",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "CactusKey app unlocking with TouchID or FaceID"
+      }
     },
     "android": {
       "versionCode": 2,

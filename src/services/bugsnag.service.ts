@@ -5,8 +5,12 @@ export class BugsnagService {
     // Singleton
     private static bugsnag_instance: any = null;
     static getInstance(): any {
-        if (BugsnagService.bugsnag_instance === null)
-        BugsnagService.bugsnag_instance = Bugsnag();
+        // Setup bugsnag
+        if (BugsnagService.bugsnag_instance === null) {
+            BugsnagService.bugsnag_instance = Bugsnag();
+            BugsnagService.bugsnag_instance.notifyReleaseStages = ['production'];
+        }
+        
         return BugsnagService.bugsnag_instance;
     }
 

@@ -19,6 +19,16 @@ export default {
     }
   },
 
+  lockscreen: {
+    title: "Sécurité",
+    hint: "Entrez votre code de sécurité pour continuer",
+    error: {
+      message: "Code erroné, veuillez réessayer",
+      ok: "OK",
+      forgot: "J'ai oublié mon code de sécurité"
+    }
+  },
+
   services: {
     no_services_text: "Ajoutez votre premier compte pour commencer",
     no_services_button: "Ajouter un compte",

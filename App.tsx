@@ -6,21 +6,20 @@ import {getStore, getPersistor} from './src/store/configure_store';
 import { BugsnagService } from './src/services/bugsnag.service';
 
 // Generate error boundary for bugsnag reporting
-const ErrorBoundary = BugsnagService.errorBoundary();
-BugsnagService.leaveBreadcrumb('App started');
-// BugsnagService.notify(new Error('Test error'))
+// const ErrorBoundary = BugsnagService.errorBoundary();
+// BugsnagService.leaveBreadcrumb('App started');
 
 // Disable all yellow warnings
 console.disableYellowBox = true;
 
 export default function App() {
   return (
-    <ErrorBoundary>
+    // <ErrorBoundary>
       <Provider store={getStore()}>
         <PersistGate persistor={getPersistor()}>
           <Root/>
         </PersistGate>
       </Provider>
-    </ErrorBoundary>
+    // </ErrorBoundary>
   );
 }

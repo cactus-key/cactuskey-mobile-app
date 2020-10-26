@@ -1,8 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
 import { Service } from './Service';
-import * as Crypto from 'expo-crypto';
-
-const SERVICES_PER_PAGE = 6;
 
 /**
  * Secure store to save services on user phone

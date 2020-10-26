@@ -20,13 +20,18 @@ const darkTheme = {...defaultDarkTheme, ...customDarkTheme};
 
 import AppStatusBar from './components/statusbar';
 import * as Font from 'expo-font';
+import { PasscodeScene } from './scenes/Lockscreen/Passcode.scene';
+import { LockscreenService } from './services/lockscreen.service';
 
 type AppProps = {current_theme: string, loading: boolean, theme: any};
+type AppState = {is_locked: boolean};
 
-class _App extends React.Component<AppProps> {
+class _App extends React.Component<AppProps, AppState> {
   constructor() {
     super({loading: true, current_theme: 'light', theme: {}});
-    this.state = {};
+    this.state = {is_locked: true};
+    LockscreenService.getInstance().setLockCallback((is_locked: boolean) => this.setState({is_locked}));
+    LockscreenService.getInstance().init();
   }
 
   async componentDidMount() {
@@ -38,6 +43,12 @@ class _App extends React.Component<AppProps> {
       Roboto_Regular: require('./assets/fonts/Roboto-Regular.ttf'),
       Roboto_Light: require('./assets/fonts/Roboto-Light.ttf'),
     });
+  }
+
+  renderLockscreen = () => {
+    if (this.state.is_locked) {
+      return (<PasscodeScene/>);
+    }
   }
 
   render() {
@@ -52,9 +63,9 @@ class _App extends React.Component<AppProps> {
               flex: 1,
               backgroundColor: this.props.current_theme === 'dark' ? '#383838' : 'blue'
             }}>
+              {this.renderLockscreen()}
               <AppNavigator/>
             </SafeAreaView>
-              
           </NavigationContainer>
           <FlashMessage position="bottom" />
       </ApplicationProvider>

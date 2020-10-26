@@ -30,7 +30,7 @@ class _AddScene extends React.Component {
         this.logger(`BarCodeScanner permission=${status}`);
         this.setState({
             has_permission: (status === 'granted')
-        })
+        });
     }
 
     onQrScanned = (data) => {

@@ -3,11 +3,11 @@ global.Buffer = global.Buffer || require('buffer').Buffer;
 import * as OTPAuth from 'otpauth';
 import { totpToken, totpOptions, totpTimeRemaining } from '@otplib/core';
 import { createDigest } from '@otplib/plugin-crypto-js';
-import uuid from 'react-native-uuid';
 import { IssuersService } from '../services/issuers.service';
 import { AppConstants } from '../constants/app.constants';
 import { Issuer } from '../constants/issuers.constant';
 import * as Crypto from 'expo-crypto';
+import uuid from 'react-native-uuid';
 
 type OtpType = 'TOTP' | 'HOTP';
 type OtpAlgorithm = 'SHA1' | 'SHA256' | 'SHA512';

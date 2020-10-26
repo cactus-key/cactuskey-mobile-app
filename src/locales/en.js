@@ -19,6 +19,16 @@ export default {
     }
   },
 
+  lockscreen: {
+    title: "Security",
+    hint: "Please enter your passcode to continue",
+    error: {
+      message: "Invalid passcode. You have {{nb}} remaining attempt(s)",
+      ok: "OK",
+      forgot: "I forgot my passcode"
+    }
+  },
+
   services: {
     no_services_text: "Add your first account to get started",
     no_services_button: "Add an account",
