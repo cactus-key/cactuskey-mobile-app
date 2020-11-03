@@ -1,5 +1,6 @@
 export class AppConstants {
 
+    static VERSION = "1.0.0";
     static WEBSITE_URL = "https://github.com/cactus-key";
     static API_BASE_URL = "http://localhost:8000/v1";
 

@@ -144,8 +144,8 @@ const styles = StyleSheet.create({
   },
   logoWrapper: {
     position: 'absolute',
-    width: Dimensions.get('window').width - 2*70,
-    left: Platform.OS === 'android' ? 15 : 70,
+    width: 70,
+    left: Platform.OS === 'android' ? 15 : (Dimensions.get('window').width - 70)/2,
     flex: 1,
     alignItems: Platform.OS === 'android' ? 'flex-start' : 'center',
     zIndex: 1000

@@ -1,27 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, ScrollView, View, Linking } from 'react-native';
+import { StyleSheet, ScrollView, Linking } from 'react-native';
 import { Layout, Text, withStyles } from '@ui-kitten/components';
 import i18n from '../../../i18n';
 import { Setting } from '../../components/settings/setting';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
-import ExpoConstants from 'expo-constants';
-import {AppConstants} from '../../constants/app.constants';
+import { AppConstants } from '../../constants/app.constants';
 import { BugsnagService } from '../../services/bugsnag.service';
 import { AppRoute } from '../../navigations/app.routes';
 
 class _IndexScene extends React.Component {
 
   constructor(props) {
-      super(props);
-      this.logger = BugsnagService.sceneBreadcrumbLogger('Settings');
+    super(props);
+    this.logger = BugsnagService.sceneBreadcrumbLogger('Settings');
 
-      this.state = {
-        services: [],
-        is_loading: true,
-        is_edit_mode: false,
-      }
+    this.state = {
+      services: [],
+      is_loading: true,
+      is_edit_mode: false,
+    }
   }
 
   toggleDarkMode = () => {
@@ -71,7 +70,7 @@ class _IndexScene extends React.Component {
                   onPress={this.openFeedback}/>
 
                 <Text appearance='hint' style={styles.categoryText}>
-                  {`CactusKey - Version ${ExpoConstants.nativeAppVersion}`}
+                  {`CactusKey - Version ${AppConstants.VERSION}`}
                 </Text>
                 <TouchableOpacity onPress={this.openWebsite}>
                   <Text appearance='hint' style={[styles.categoryText, {paddingTop: 0, textTransform: 'none'}]}>

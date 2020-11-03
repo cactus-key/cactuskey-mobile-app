@@ -73,12 +73,14 @@ const styles = StyleSheet.create({
     headerTitle: {
         marginTop: '0%',
         fontSize: 20,
-        fontFamily: 'Roboto_Medium'
+        fontFamily: 'Roboto_Medium',
+        textAlign: 'center'
     },
     headerText: {
         marginTop: '10%',
         fontSize: 17,
-        fontFamily: 'Roboto_Regular'
+        fontFamily: 'Roboto_Regular',
+        textAlign: 'center'
     },
     buttonsWrapper: {
         marginTop: '20%',

@@ -38,7 +38,6 @@ class _AddScene extends React.Component {
         if (this.has_scanned) return;
         this.has_scanned = true;
         this.logger('New QR code scan');
-        console.log(data.data);
 
         try {
             const service = new Service(data.data);

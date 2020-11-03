@@ -46,7 +46,7 @@ class _FeedbackScene extends React.Component {
                         status='basic'
                         size='large'
                         onPress={this.loveClick}>
-                            <Feather name="heart" color="red" size="18"/>
+                            <Feather name="heart" color="red" size={18}/>
                             &nbsp;&nbsp;&nbsp;{i18n.t('feedback.love_button')}
                     </Button>
 
@@ -55,7 +55,7 @@ class _FeedbackScene extends React.Component {
                         status='basic'
                         size='large'
                         onPress={this.disappointedClick}>
-                            <Feather name="frown" color="#D19300" size="18"/>
+                            <Feather name="frown" color="#D19300" size={18}/>
                             &nbsp;&nbsp;&nbsp;{i18n.t('feedback.disappointed_button')}
                     </Button>
                 </View>
