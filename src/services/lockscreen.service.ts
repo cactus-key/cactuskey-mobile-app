@@ -57,14 +57,16 @@ export class LockscreenService {
      * Determine if lockscreen is enabled of not
      */
     async isEnabledAsync(): Promise<boolean> {
-        return (await SecureStore.getItemAsync('lock.passcode')) !== null;
+        return false; // Feature available soon
+        // return (await SecureStore.getItemAsync('lock.passcode')) !== null;
     }
 
     /**
      * Determine if biometric unlocking is enabled of not
      */
     async isBiometricEnabledAsync(): Promise<boolean> {
-        return (await SecureStore.getItemAsync('lock.is_biometric_enabled')) === 'true';
+        return false; // Feature available soon
+        // return (await SecureStore.getItemAsync('lock.is_biometric_enabled')) === 'true';
     }
 
     /**

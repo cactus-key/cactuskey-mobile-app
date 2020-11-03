@@ -1,6 +1,11 @@
 export class AppConstants {
 
     static WEBSITE_URL = "https://github.com/cactus-key";
+    static API_BASE_URL = "http://localhost:8000/v1";
+
+    // FORMS
+    static FORM_ISSUER_SUBMISSION_URL = "https://forms.gle/L3ET5HDxH6ENfZxq7";
+    static FORM_FEEDBACK_URL = "https://pierreavinain.typeform.com/to/P9BIu7AF";
 
     // LIMITS
     // Maximum OTPAuth URI size is 2048 bytes. An attempt to store larger values may fail.

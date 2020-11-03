@@ -66,8 +66,15 @@ class ServicesList extends React.Component {
     }
 
     reloadServices = async () => {
+        const services_count_before = this.state.services.length;
         const services = await ServiceStore.getInstance().fetchAll();
+        const services_count_after = services.length;
         this.setState({services, is_loading: false});
+
+        // If it's the 2nd service, open feedback popup
+        if (services_count_before === 1 && services_count_after === 2) {
+            this.props.navigation.navigate(AppRoute.FEEDBACK);
+        }
     }
 
     renderLoading = () => {

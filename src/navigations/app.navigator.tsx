@@ -11,6 +11,9 @@ import { AddManual_InfoScene } from '../scenes/Services/AddManual-Info.scene';
 import { EditScene } from '../scenes/Services/Edit.scene';
 
 import { IndexScene } from '../scenes/Settings/Index.scene';
+import { FeedbackScene } from '../scenes/Feedback/Feedback.scene';
+import { DisappointedScene } from '../scenes/Feedback/Disappointed.scene';
+import { LoveScene } from '../scenes/Feedback/Love.scene';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +28,11 @@ export const AppNavigator = (): React.ReactElement => (
     <Stack.Screen name={AppRoute.SERVICES_EDIT} component={EditScene}/>
 
     <Stack.Screen name={AppRoute.SETTINGS_INDEX} component={IndexScene}/>
+
+    <Stack.Screen name={AppRoute.FEEDBACK} component={FeedbackScene}/>
+    <Stack.Screen name={AppRoute.FEEDBACK_LOVE} component={LoveScene}/>
+    <Stack.Screen name={AppRoute.FEEDBACK_DISAPPOINTED} component={DisappointedScene}/>
+
     {/* <Stack.Screen name={AppRoute.MAIN} component={ServicesNavigator} options={{gestureEnabled: false}}/> */}
   </Stack.Navigator>
 );

@@ -25,9 +25,20 @@ export class Service {
         // Generate UUID if doesn't exists
         this._uuid = _uuid || uuid.v4();
 
+        // Remove 'image' property
+        const parts = this._uri.split('&');
+        for (let i = 0; i < parts.length; i++) {
+            if (parts[i].substr(0, 6) === 'image=') {
+                parts.splice(i);
+                i--;
+            }
+        }
+        this._uri = parts.join('&');
+
         // Parse OTPAuth URI with library
         // see https://www.npmjs.com/package/otpauth
-        const data = OTPAuth.URI.parse(_uri);
+        // const data = OTPAuth.URI.parse(_uri);
+        const data = OTPAuth.URI.parse(this._uri);
 
         // Detect OTP type
         this._type = <OtpType> data.constructor.name;
@@ -110,7 +121,8 @@ export class Service {
      * Return issuer name
      */
     get issuerName(): any {
-        return this.fetchIssuer().name;
+        const issuer = this.fetchIssuer();
+        return issuer.is_default ? this._issuer : issuer.name;
     }
 
     /**

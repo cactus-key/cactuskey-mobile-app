@@ -1,13 +1,14 @@
 import React from 'react';
 import i18n from "../../../i18n";
 import { connect } from 'react-redux';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Linking } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { withStyles } from '@ui-kitten/components';
 import { Layout, TopNavigation, TopNavigationAction, Text } from '@ui-kitten/components';
 import IssuersList from '../../components/issuers/issuers-list';
 import { AppRoute } from '../../navigations/app.routes';
 import { BugsnagService } from '../../services/bugsnag.service';
+import { AppConstants } from '../../constants/app.constants';
 
 class _AddManual_IssuerScene extends React.Component {
 
@@ -24,6 +25,10 @@ class _AddManual_IssuerScene extends React.Component {
             reloadServicesList: this.props.route.params.reloadServicesList,
             issuer
         });
+    }
+
+    openSubmissionForm = () => {
+        Linking.openURL(AppConstants.FORM_ISSUER_SUBMISSION_URL);
     }
 
     renderBack = () => (
@@ -43,6 +48,10 @@ class _AddManual_IssuerScene extends React.Component {
                     rightControls={[]}
                     leftControl={this.renderBack()} />
                 <Text style={styles.text}>{i18n.t('services.add.manual.issuer.text')}</Text>
+                <Text style={styles.hintText}
+                        onPress={this.openSubmissionForm}>
+                        {i18n.t('services.add.manual.issuer.submit_link')}
+                </Text>
                 <View style={styles.issuersListWrapper}>
                     <IssuersList onIssuerSelected={this.onIssuerSelected}/>
                 </View>
@@ -60,9 +69,15 @@ const styles = StyleSheet.create({
     },
     text: {
         textAlign: 'center',
-        marginVertical: 20,
-        marginHorizontal: 40
+        marginTop: 10,
+        marginBottom: 10,
+        // marginHorizontal: 40
     },
+    hintText: {
+        paddingBottom: 25,
+        textAlign: 'center',
+        color: '#BBEDAC'
+    }
 });
 
 const mapStateToProps = (state) => {

@@ -9,6 +9,7 @@ import { Feather } from '@expo/vector-icons';
 import ExpoConstants from 'expo-constants';
 import {AppConstants} from '../../constants/app.constants';
 import { BugsnagService } from '../../services/bugsnag.service';
+import { AppRoute } from '../../navigations/app.routes';
 
 class _IndexScene extends React.Component {
 
@@ -36,6 +37,11 @@ class _IndexScene extends React.Component {
     Linking.openURL(AppConstants.WEBSITE_URL);
   }
 
+  openFeedback = () => {
+    this.logger('Open feedback');
+    this.props.navigation.navigate(AppRoute.FEEDBACK);
+  }
+
   render() {
     return (
         <Layout style={styles.container} level='2'>
@@ -57,6 +63,12 @@ class _IndexScene extends React.Component {
                     onChange={this.toggleDarkMode}
                   />
                 </Setting> */}
+
+                <Text appearance='hint' style={styles.categoryText}>
+                  {i18n.t('settings.general.title')}
+                </Text>
+                <Setting icon="message-square" color="#D19300" hint={i18n.t('settings.general.do_you_like')}
+                  onPress={this.openFeedback}/>
 
                 <Text appearance='hint' style={styles.categoryText}>
                   {`CactusKey - Version ${ExpoConstants.nativeAppVersion}`}

@@ -19,7 +19,7 @@ Thank you for considering contributing to CactusKey! Fell free to submit pull-re
 
 ### Contribute new issuer
 To contribute a new issuer name and icon, submit a pull-request with:
-1. Issuer icon (100x100, png or jpg) into `src/issuers/` folder
+1. Issuer icon (100x100, png or jpg) into `src/issuers/` folder (`https://itunes.apple.com/lookup?id=...` icon `artworkUrl100`)
 2. Issuer info into `ISSUERS` array (`src/constants/issuers.constants.ts`), with displayed `name`, `key` (given into QR code), and `icon` filename.
 
 ## Start Android emulator

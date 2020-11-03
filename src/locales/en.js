@@ -47,7 +47,8 @@ export default {
       },
       manual: {
         issuer: {
-          text: "What type of account do you want to add?"
+          text: "What type of account do you want to add?",
+          submit_link: "Missing account? Request to add it"
         },
         info: {
           text: "Enter your key to add your {{name}} account.",
@@ -86,10 +87,31 @@ export default {
     title: "Settings",
     general: {
       title: "General",
-      dark_mode: "Dark theme"
+      dark_mode: "Dark theme",
+      do_you_like: "Do you like CactusKey?"
     },
     security: {
       title: "Security"
+    }
+  },
+
+  feedback: {
+    title: "Do you like CactusKey?",
+    love_button: "I love CactusKey",
+    disappointed_button: "I am disappointed",
+
+    love: {
+      title: "Spread the word by rating CactusKey",
+      text: "Amazing! Share your experience by rating the app on the Store",
+      next_button: "Give 5 stars to CactusKey",
+      later_button: "No, thanks"
+    },
+
+    disappointed: {
+      title: "We are so sorry...",
+      text: "... that we disapppointed you! Help us know how we can improve the app by answering this survey",
+      next_button: "Give my opinion",
+      later_button: "Not now"
     }
   }
 };

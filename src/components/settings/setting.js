@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Roboto_Regular',
-    marginTop: 7
+    marginTop: 7,
+    fontSize: 17
   }
 });

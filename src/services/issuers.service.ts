@@ -47,7 +47,8 @@ export class IssuersService {
             name: `(${i18n.t('common.other')})`,
             key: "_default",
             key_aliases: [],
-            icon: require("../assets/issuers/_default.png")
+            icon: require("../assets/issuers/_default.png"),
+            is_default: true
         };
     }
 

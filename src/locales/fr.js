@@ -47,7 +47,8 @@ export default {
       },
       manual: {
         issuer: {
-          text: "Quel type de compte souhaitez-vous ajouter ?"
+          text: "Quel type de compte souhaitez-vous ajouter ?",
+          submit_link: "Compte manquant ? Demandez à l'ajouter"
         },
         info: {
           text: "Saisissez votre clé pour ajouter votre compte {{name}}.",
@@ -86,10 +87,31 @@ export default {
     title: "Paramètres",
     general: {
       title: "Général",
-      dark_mode: "Thème sombre"
+      dark_mode: "Thème sombre",
+      do_you_like: "Que pensez-vous de CactusKey ?"
     },
     security: {
       title: "Sécurité"
+    }
+  },
+
+  feedback: {
+    title: "Que pensez-vous de CactusKey ?",
+    love_button: "J'adore CactusKey",
+    disappointed_button: "Je suis déçu",
+
+    love: {
+      title: "Partagez votre joie !",
+      text: "Fantastique ! Partagez votre joie en donnant une note sur le Store !",
+      next_button: "Donner 5 étoiles à CactusKey",
+      later_button: "Pas maintenant"
+    },
+
+    disappointed: {
+      title: "Nous sommes désolés...",
+      text: "... de ne pas avoir pu répondre à vos besoins ! Faites-nous savoir comment améliorer l'app avec ce questionnaire",
+      next_button: "Donner mon avis",
+      later_button: "Pas pour l'instant"
     }
   }
 };

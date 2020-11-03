@@ -22,5 +22,9 @@ export enum AppRoute {
     SERVICES_EDIT = 'Services Edit',
 
     SETTINGS = 'Settings',
-    SETTINGS_INDEX = 'Settings Index'
+    SETTINGS_INDEX = 'Settings Index',
+
+    FEEDBACK = 'Feedback',
+    FEEDBACK_LOVE = 'Feedback Love',
+    FEEDBACK_DISAPPOINTED = 'Feedback Disappointed'
 }
