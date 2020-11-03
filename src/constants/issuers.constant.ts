@@ -141,6 +141,54 @@ const ISSUERS: Issuer[] = [
         key_aliases: [],
         icon: require(`${ICONS_PATH}/twilio.png`)
     },
+    {
+        name: "PyPI",
+        key: "PyPI",
+        key_aliases: [],
+        icon: require(`${ICONS_PATH}/pypi.jpg`)
+    },
+    {
+        name: "Bugsnag",
+        key: "Bugsnag",
+        key_aliases: [],
+        icon: require(`${ICONS_PATH}/bugsnag.jpg`)
+    },
+    {
+        name: "Ionos 1&1",
+        key: "IONOS",
+        key_aliases: [],
+        icon: require(`${ICONS_PATH}/ionos.png`)
+    },
+    {
+        name: "Rebrandly",
+        key: "Rebrandly",
+        key_aliases: [],
+        icon: require(`${ICONS_PATH}/rebrandly.jpg`)
+    },
+    {
+        name: "Cloudflare",
+        key: "Cloudflare",
+        key_aliases: [],
+        icon: require(`${ICONS_PATH}/cloudflare.png`)
+    },
+    {
+        name: "1Password",
+        key: "1Password",
+        key_aliases: [],
+        icon: require(`${ICONS_PATH}/1password.jpg`)
+    },
+    {
+        name: "PayPal",
+        key: "PayPal",
+        key_aliases: [],
+        icon: require(`${ICONS_PATH}/paypal.jpg`)
+    },
+    {
+        name: "Trello",
+        key: "Trello",
+        key_aliases: [],
+        icon: require(`${ICONS_PATH}/trello.jpg`)
+    },
     // {
     //     name: "Slack",
     //     key: "slack",

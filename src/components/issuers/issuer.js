@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         marginVertical: 5
     },
     nameWrapper: {
-        paddingLeft: 10,
+        paddingLeft: 5,
         paddingTop: 14
     },
     nameText: {

@@ -25,10 +25,13 @@ export class Service {
         // Generate UUID if doesn't exists
         this._uuid = _uuid || uuid.v4();
 
-        // Remove 'image' property
+        // Remove 'image' and 'skid' properties
         const parts = this._uri.split('&');
         for (let i = 0; i < parts.length; i++) {
-            if (parts[i].substr(0, 6) === 'image=') {
+            if (
+                parts[i].substr(0, 6) === 'image=' ||
+                parts[i].substr(0, 5) === 'skid='
+            ) {
                 parts.splice(i);
                 i--;
             }
